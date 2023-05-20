@@ -1,0 +1,57 @@
+/* application.css */
+
+
+/* background */
+.root {
+    -fx-background-color: black;
+}
+
+/* Outer walls */
+.maze-line-up {
+    -fx-stroke: blue;
+    -fx-stroke-width: 2;
+}
+
+.maze-line-right {
+    -fx-stroke: blue;
+    -fx-stroke-width: 2;
+}
+
+.maze-line-down {
+    -fx-stroke: blue;
+    -fx-stroke-width: 2;
+}
+
+.maze-line-left {
+    -fx-stroke: blue;
+    -fx-stroke-width: 2;
+}
+
+/* Inner walls */
+.maze-line-up.animating {
+    -fx-stroke: red;
+    -fx-stroke-width: 2;
+    -fx-opacity: 0;
+    -fx-transition: opacity 0.3s;
+}
+
+.maze-line-right.animating {
+    -fx-stroke: red;
+    -fx-stroke-width: 2;
+    -fx-opacity: 0;
+    -fx-transition: opacity 0.3s;
+}
+
+.maze-line-down.animating {
+    -fx-stroke: red;
+    -fx-stroke-width: 2;
+    -fx-opacity: 0;
+    -fx-transition: opacity 0.3s;
+}
+
+.maze-line-left.animating {
+    -fx-stroke: red;
+    -fx-stroke-width: 2;
+    -fx-opacity: 0;
+    -fx-transition: opacity 0.3s;
+}
