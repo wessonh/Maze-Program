@@ -101,7 +101,7 @@ public class Gen {
 
         List<Line> visibleLines = new ArrayList<>();// Create list for visible lines and all visited nodes
 
-        for (int y = 0; y < row; y++) { // for loops to print the maze rows and cols
+        for (int y = 0; y < row; y++) { // for loops to add color lines in the scene for each node in the maze
             for (int x = 0; x < col; x++) {
 
                 if (maze[y][x].isUp()) {
