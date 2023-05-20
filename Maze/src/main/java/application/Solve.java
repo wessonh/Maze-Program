@@ -16,7 +16,7 @@ public class Solve {
 
     public void search(Node[][] maze) {
 
-        for (Node[] nodes : maze) { // enhanced for loop, sets all nodes in maze array to unvisited
+        for (Node[] nodes : maze) { // enhanced for loop
 
             for (int j = 0; j < maze[0].length; j++) {
 
