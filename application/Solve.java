@@ -1,7 +1,4 @@
 package application;
-import javafx.scene.Group;
-import javafx.scene.shape.Line;
-import javafx.scene.text.Text;
 
 public class Solve {
 
@@ -67,37 +64,7 @@ public class Solve {
     }
 
     public void animate(){ // method for adding frame to animation with chosen delay, animates the breadth first search
+       
         animations.playAnimation();
-    }
-
-    // this isn't used now because of the Animations class handling the displaying this, but I am keeping it just because
-    public void print(Group group, Node[][] maze) {
-        int row = maze.length;
-        int col = maze[0].length;
-        for(int y = 0; y < row; y++) {
-            for(int x = 0; x < col; x++) {
-                if(maze[y][x].isVisited()) {
-                    Text text = new Text(x*25 + 37.5, y*25 + 37.5, "*");
-                    group.getChildren().add(text);
-                }
-                if(maze[y][x].isUp()) {
-                    Line top = new Line(x*25 + 25,y*25 + 25,x*25+25 + 25,y*25 + 25);
-
-                    group.getChildren().add(top);
-                }
-                if(maze[y][x].isRight()) {
-                    Line right = new Line(x*25+25 + 25,y*25 +25,x*25+25 + 25,y*25+25 + 25);
-                    group.getChildren().add(right);
-                }
-                if(maze[y][x].isDown()) {
-                    Line bottom =new Line(x*25+25 + 25,y*25+25 + 25,x*25 + 25,y*25+25 + 25);
-                    group.getChildren().add(bottom);
-                }
-                if(maze[y][x].isLeft()) {
-                    Line left = new Line(x*25 + 25,y*25+25 + 25,x*25 + 25,y*25+25);
-                    group.getChildren().add(left);
-                }
-            }
-        }
     }
 }
