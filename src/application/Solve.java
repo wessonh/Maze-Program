@@ -74,7 +74,8 @@ public class Solve {
             }
             else {
                 for(Node neighbor : current.getNeighbors()) {
-                    if(neighbor.isVisited()) {  // check if the neighbor is unvisited
+                    if(
+                  		neighbor.isVisited()) {  // check if the neighbor is unvisited
                         // If neighbor is above current node and no walls are blocking way, visit and add to queue
                         if(neighbor.getRow() < current.getRow() && !neighbor.isDown() && !current.isUp()) {
                             neighbor.setVisited(true);

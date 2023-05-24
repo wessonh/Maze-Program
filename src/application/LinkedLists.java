@@ -31,7 +31,7 @@ public class LinkedLists <Any> {
 		begin.next = end;
 		
 		theSize = 0;
-		modCount++;
+		//modCount++;
 	}
 	public int size() {
 		
@@ -72,14 +72,14 @@ public class LinkedLists <Any> {
 		help.prev.next = help;
 		p.prev = help;
 		theSize++;
-		modCount++;
+		//modCount++;
 	}
 	private Any remove(Node <Any> p) {
 		
 		p.next.prev = p.prev;
 		p.prev.next = p.next;
 		theSize--;
-		modCount++;
+		//modCount++;
 		
 		return p.data;
 	}
@@ -140,7 +140,7 @@ public class LinkedLists <Any> {
 	}*/
 	
 	private int theSize;
-	private int modCount = 0;
+	//private int modCount = 0;
 	private Node <Any> begin;
 	private Node <Any> end;
 }
