@@ -2,7 +2,8 @@ package application;
 
 public class Stack <Any>{
 	
-	LinkedLists <Any>list;
+	LinkedLists <Any> list;
+	
 	public Stack() {
 		list = new LinkedLists<>();
 	}

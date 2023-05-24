@@ -15,6 +15,8 @@ public class Animations {
         
        this.timeline = new Timeline(); // new Timeline
     }
+    
+    
     public static void animateLines(List<Line> lines) {
         
         for (Line line : lines) { // for loop sets lines to be invisible
@@ -29,7 +31,7 @@ public class Animations {
             line.setVisible(true); // make the line visible
             index.getAndIncrement(); // increment the index
         });
-
+        
         timeline.getKeyFrames().add(keyFrame);// Add key frame to the timeline
         timeline.setCycleCount(lines.size()); // sets cycle count to size of lines list
     }
@@ -42,7 +44,7 @@ public class Animations {
             Main.group.getChildren().add(text);
         }));
     }
-
+    
     public void playAnimation() {
         
         timeline.play(); // play animation

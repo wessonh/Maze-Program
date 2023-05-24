@@ -8,7 +8,8 @@ import static application.Animations.animateLines;
 
 public class Gen {
     
-    public static Node[][] create(int row, int col) {
+		
+    public Node[][] create(int row, int col) {
         
         Node[][] maze = new Node[row][col];// initializes maze array with number of row and col
 
@@ -90,9 +91,6 @@ public class Gen {
             }
         }
         
-        if (end.isVisited()) { // Check if end node has been visited
-            return;
-        }
         start.setUp(false); // Set start and end nodes
         end.setDown(false);
         end.setEnd(true);
