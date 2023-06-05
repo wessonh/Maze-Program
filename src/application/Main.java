@@ -19,7 +19,7 @@ public class Main extends Application {
 
         try {
             Scene scene = new Scene(group, 425, 425); // creates a new scene with group as the root, this is where you adjust window size
-            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("application.css")).toExternalForm()); // adds the CSS style sheet
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("Untitled.fxml")).toExternalForm()); // adds the CSS style sheet
             primaryStage.setScene(scene); // sets primary stage to our scene
             primaryStage.show(); // displays the window
 
