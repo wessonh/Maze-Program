@@ -6,6 +6,8 @@ import javafx.scene.control.Button;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+
+import java.util.Collections;
 import java.util.List;
 
 public class Animations {
@@ -43,6 +45,7 @@ public class Animations {
             // marks visited with *
             Text text = new Text(current.getCol() * 25 + 37.5, current.getRow() * 25 + 37.5, "*");
             // for nodes in group, add * to display
+            
             Main.group2.getChildren().add(text); // for nodes in group, add * to display
         }));
     }
