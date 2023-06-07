@@ -1,4 +1,5 @@
 package application;
+import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import java.util.ArrayList;
@@ -11,6 +12,9 @@ public class Gen {
 		
     public Node[][] create(int row, int col) {
         
+   	  
+   
+   	  
         Node[][] maze = new Node[row][col];// initializes maze array with number of row and col
 
         for (int i = 0; i < row; i++) {// for loop fills row and col with nodes
@@ -39,6 +43,7 @@ public class Gen {
                 }
             }
         }
+        
         generateMaze(row, col, maze); // calls generateMaze
         print(row, col, maze); // Calls the print method to print the generated maze.
         return maze;
@@ -110,7 +115,7 @@ public class Gen {
                         top.setStroke(Color.RED); // else red
                     }
                     top.setVisible(false);
-                    Main.group.getChildren().add(top);
+                    Main.group2.getChildren().add(top);
                     visibleLines.add(top);
 
                 }
@@ -122,7 +127,7 @@ public class Gen {
                         right.setStroke(Color.RED); // else red
                     }
                     right.setVisible(false);
-                    Main.group.getChildren().add(right);
+                    Main.group2.getChildren().add(right);
                     visibleLines.add(right);
                 }
                 if (maze[y][x].isDown()) {
@@ -133,7 +138,7 @@ public class Gen {
                         bottom.setStroke(Color.RED); // else red
                     }
                     bottom.setVisible(false);
-                    Main.group.getChildren().add(bottom);
+                    Main.group2.getChildren().add(bottom);
                     visibleLines.add(bottom);
                 }
                 if (maze[y][x].isLeft()) {
@@ -145,7 +150,7 @@ public class Gen {
                         left.setStroke(Color.RED); // else red
                     }
                     left.setVisible(false);
-                    Main.group.getChildren().add(left);
+                    Main.group2.getChildren().add(left);
                     visibleLines.add(left);
                 }
             }

@@ -5,6 +5,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -12,16 +14,16 @@ import javafx.util.Duration;
 
 public class Solve {
 
-    private Animations animations;
+    private Animations animations = new Animations();
     private int delay;
 
     public Solve() {
 
-        this.animations = new Animations(); // makes new animation object
+         // makes new animation object
         this.delay = 0; // sets delay to O
     }
 
-    public void start(Stage stage, Group group, Node[][]maze) {
+    public void start(Group group, Node[][]maze, Button button) {
 
         try {
       	  	
@@ -40,9 +42,10 @@ public class Solve {
             timeline.setOnFinished(e -> { // when maze generation animation is finished.
                  // new solve
                 search(maze);  // run the solution search
-                animate(); // animate solution
+                animate(button); // animate solution
             });
             timeline.play(); // starts animation
+            
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -102,7 +105,7 @@ public class Solve {
         }
     }
 
-    public void animate(){ // method for adding frame to animation with chosen delay, animates the breadth first search
-        animations.playAnimation();
+    public void animate(Button button){ // method for adding frame to animation with chosen delay, animates the breadth first search
+        animations.playAnimation(button);
     }
 }
