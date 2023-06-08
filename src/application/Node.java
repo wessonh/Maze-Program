@@ -1,5 +1,6 @@
 package application;
 import java.util.ArrayList;
+import java.util.*;
 
 public class Node {
     
@@ -11,7 +12,11 @@ public class Node {
     private boolean end;// boolean to check for end of the maze
     private final int row; // nodes position on maze grid
     private final int col;
-    private final ArrayList<Node> neighbors = new ArrayList<>(); // list stores all the neighboring nodes
+    private final ArrayList<Node> neighbors = new ArrayList<>(); // list stores all the neighboring node
+    public Integer distance = 0;
+    
+    Node parent;
+	 
 
     // constructor for Node
     public Node(int row, int col) {
@@ -19,7 +24,10 @@ public class Node {
         this.col = col;
         this.row = row;
         this.end = false;
+        
     }
+    
+    
 
     // getters and setters for the class variables
     public boolean isUp() {
@@ -96,6 +104,6 @@ public class Node {
 
     // adds neighbors.
     public void addNeighbor(Node node) {
-        this.neighbors.add(node);
-    }
+       this.neighbors.add(node);
+   }
 }
