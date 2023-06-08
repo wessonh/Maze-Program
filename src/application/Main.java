@@ -83,13 +83,15 @@ public class Main extends Application {
 	      	 maze = generator.create(15, 15);
 	      	 Solve solver = new Solve();
 	      	 solver.start(group2, maze,button2);
-	      	 
+	      	 button.setDisable(true);
 	      	 
 	       });
 	      
 	       button2.setOnAction(value ->  {
 	      	 group2.getChildren().clear();
 	      	 group2.getChildren().add(button);
+	      	 button.setText("Generate New Maze");
+	      	 button.setDisable(false);
 	      	 
 	       });
 	       
