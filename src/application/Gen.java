@@ -48,6 +48,10 @@ public class Gen {
         print(row, col, maze); // Calls the print method to print the generated maze.
         return maze;
     }
+    
+    public static void askSize() {
+   	 
+    }
     private static void generateMaze(int row, int col, Node[][] maze) {
         // makes stack to keep track of visited nodes
         Stack<Node> stack = new Stack<>();
