@@ -1,7 +1,8 @@
 package application;
 import java.util.ArrayList;
+import java.util.*;
 
-public class Node extends javafx.scene.Node {
+public class Node {
 
     private boolean up = true; //booleans for the walls around nodes
     private boolean down = true;
@@ -11,14 +12,22 @@ public class Node extends javafx.scene.Node {
     private boolean end;// boolean to check for end of the maze
     private final int row; // nodes position on maze grid
     private final int col;
-    private final ArrayList<Node> neighbors = new ArrayList<>(); // list stores all the neighboring nodes
+    private final ArrayList<Node> neighbors = new ArrayList<>(); // list stores all the neighboring node
+    public Integer distance = 0;
 
-    public Node(int row, int col) { // constructor for Node
+    Node parent;
+
+
+    // constructor for Node
+    public Node(int row, int col) {
         this.visited = false;
         this.col = col;
         this.row = row;
         this.end = false;
+
     }
+
+
 
     // getters and setters for the class variables
     public boolean isUp() {
