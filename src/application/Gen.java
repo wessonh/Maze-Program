@@ -40,6 +40,7 @@ public class Gen {
                 }
             }
         }
+
         generateMaze(row, col, maze); // calls generateMaze
         print(row, col, maze); // Calls the print method to print the generated maze.
         return maze;
@@ -91,7 +92,6 @@ public class Gen {
                 }
             }
         }
-
         if (end.isVisited()) { // Check if end node has been visited
             return;
         }
@@ -114,9 +114,8 @@ public class Gen {
                         top.setStroke(Color.RED); // else red
                     }
                     top.setVisible(false);
-                    Main.group.getChildren().add(top); // add top line to node in group
+                    Main.group2.getChildren().add(top);
                     visibleLines.add(top);
-
                 }
                 if (maze[y][x].isRight()) {
                     Line right = new Line(x * 25 + 25 + 25, y * 25 + 25, x * 25 + 25 + 25, y * 25 + 25 + 25);
@@ -126,7 +125,7 @@ public class Gen {
                         right.setStroke(Color.RED); // else red
                     }
                     right.setVisible(false);
-                    Main.group.getChildren().add(right); // remove right wall node in group
+                    Main.group2.getChildren().add(right);
                     visibleLines.add(right);
                 }
                 if (maze[y][x].isDown()) {
@@ -137,7 +136,7 @@ public class Gen {
                         bottom.setStroke(Color.RED); // else red
                     }
                     bottom.setVisible(false);
-                    Main.group.getChildren().add(bottom);
+                    Main.group2.getChildren().add(bottom);
                     visibleLines.add(bottom);
                 }
                 if (maze[y][x].isLeft()) {
@@ -149,7 +148,7 @@ public class Gen {
                         left.setStroke(Color.RED); // else red
                     }
                     left.setVisible(false);
-                    Main.group.getChildren().add(left);
+                    Main.group2.getChildren().add(left);
                     visibleLines.add(left);
                 }
             }
@@ -157,11 +156,8 @@ public class Gen {
         animateLines(visibleLines); // animates the visible lines
     }
 
-    static Node [][] animateGen(Group group) {
-
-        group.getChildren().clear();
-
-        Node[][] maze = create(15,15);
+    static Node[][] animateGen(Group group) {
+        Node[][] maze = create(15, 15);
         Timeline timeline = new Timeline();
         int delay = 0;
 
@@ -174,6 +170,7 @@ public class Gen {
         timeline.play();
         return maze;
     }
+
     public void render(int row, int col, Node[][] maze) {
 
         print(row, col, maze); // Calls the print method to print the maze.
