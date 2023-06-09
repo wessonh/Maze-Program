@@ -1,40 +1,34 @@
 package application;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.shape.Line;
-import javafx.stage.Stage;
-import javafx.util.Duration;
-import java.util.Objects;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.control.Button;
-import javafx.scene.Parent;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class Main extends Application {
 
-    static final Group group = new Group(); // group to store nodes for scene display
+    static final Group group = new Group();
+    static final Group group1 = new Group();
     static final Group group2 = new Group();
     static Node[][] maze;
     static Stage stage;
-    static Button button = new Button();
-    
-    @Override // entry point for javaFX
-    public void start(Stage primaryStage) {
+    AtomicBoolean solverDone = new AtomicBoolean(false);
+    AtomicBoolean mazeGenerated = new AtomicBoolean(false);
 
+    @Override
+    public void start(Stage primaryStage) {
         try {
-      	  	
-      	  	stage = primaryStage;
-      	  	
-      	  	
-      	  	Scene scene = new Scene(group, 500, 500); // creates a new scene with group as the root, this is where you adjust window size
+            stage = primaryStage;
+            Scene scene = new Scene(group, 500, 500); // creates a new scene with group as the root, this is where you adjust window size
             Scene scene2 = new Scene(group2, 500, 500);
-      	  	Button button = new Button("START");
-      	  	button.setTranslateX(200);
+            Button button = new Button("START");
+            button.setTranslateX(200);
             button.setTranslateY(300);
             Text text = new Text("""
             		
@@ -42,61 +36,106 @@ public class Main extends Application {
             		""");
             text.setTranslateX(100);
             text.setTranslateY(100);
-            
+
             group.getChildren().add(text);
             group.getChildren().add(button);
+
             button.setOnAction(value ->  {
-               stage.setScene(scene2);
+                stage.setScene(scene2);
             });
 
-            
-            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("application.css")).toExternalForm()); // adds the CSS style sheet
-      	  	
-      	  		
-      	  
-            
-            
-            stage.setScene(scene);
-            stage.show(); // displays the window*/
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("application.css")).toExternalForm());
+            primaryStage.setScene(scene);
+            primaryStage.show();
+
+            // Position the buttons
+            Button generateButton = new Button("Generate Maze");
+            generateButton.setLayoutX(10);
+            generateButton.setLayoutY(450);
+
+            Button solveButton = new Button("Solve Maze");
+            solveButton.setLayoutX(110);
+            solveButton.setLayoutY(450);
+
+            Button clearButton = new Button("Clear Maze");
+            clearButton.setLayoutX(150);
+            clearButton.setLayoutY(450);
+
+            Button saveButton = new Button("Save Maze");
+            saveButton.setLayoutX(260);
+            saveButton.setLayoutY(450);
+
+            Button loadButton = new Button("Load Maze");
+            loadButton.setLayoutX(340);
+            loadButton.setLayoutY(450);
+
+
+            clearButton.setVisible(false);
+
+            // Add buttons to group2
+            group2.getChildren().addAll(saveButton, loadButton, generateButton, solveButton, clearButton);
+
+            // Set onAction for saveButton, loadButton, generateButton and solveButton
+            saveButton.setOnAction(e -> {
+                SaveLoad.save(maze);
+            });
+
+            loadButton.setOnAction(e -> {
+                Node[][] loadedMaze = SaveLoad.load();
+
+                // Get the dimensions of the loaded maze.
+                assert loadedMaze != null;
+                int loadedRows = loadedMaze.length;
+                int loadedCols = loadedMaze[0].length;
+
+                // Use the Gen instance to render the loaded maze.
+                Gen generator = new Gen();
+                generator.render(loadedRows, loadedCols, loadedMaze);
+                solveButton.setDisable(false);
+                clearButton.setVisible(true);
+            });
+
+            generateButton.setOnAction(e -> {
+
+                if (group.getChildren().isEmpty()) {
+                    // The group is empty
+                    System.out.println("The group is empty");
+                } else {
+                    // The group is not empty
+                    System.out.println("The group is not empty");
+                }
+                maze = Gen.animateGen(group);
+                System.out.println(Arrays.deepToString(maze));
+                mazeGenerated.set(true);
+                clearButton.setVisible(true);
+                solveButton.setDisable(false);
+
+            });
+
+            solveButton.setOnAction(e -> {
+                if (mazeGenerated.get() && !solverDone.get()) {
+                    Solve solver = new Solve();
+                    solver.animateSolve(maze, group, solverDone);
+                    solveButton.setDisable(true);
+                }
+            });
+
+            clearButton.setOnAction(value ->  {
+                group.getChildren().clear();
+                mazeGenerated.set(false);
+                solverDone.set(false);
+                solveButton.setDisable(true);
+                clearButton.setVisible(false);
+            });
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
-    
+
     public static void main(String[] args) {
-   	
-	   	 Button button = new Button("Generate Maze");
-	 	  	 button.setTranslateX(10);
-	       button.setTranslateY(450);
-	       group2.getChildren().add(button);
-	       Button button2 = new Button("Clear Maze");
-	 	  	 button2.setTranslateX(200);
-	       button2.setTranslateY(450);
-	       button2.setVisible(false);
-	       
-	       
-	       
-	       button.setOnAction(value ->  {
-	      	 group2.getChildren().add(button2);
-	      	 Gen generator = new Gen();
-	      	 maze = generator.create(15, 15);
-	      	 Solve solver = new Solve();
-	      	 solver.start(group2, maze,button2);
-	      	 button.setDisable(true);
-	      	 
-	       });
-	      
-	       button2.setOnAction(value ->  {
-	      	 group2.getChildren().clear();
-	      	 group2.getChildren().add(button);
-	      	 button.setText("Generate New Maze");
-	      	 button.setDisable(false);
-	      	 
-	       });
-	       
-   	 
-   	 launch(args);
-   	 
+        maze = new Node[0][0];
+        launch(args);
     }
 }
