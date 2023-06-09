@@ -53,7 +53,8 @@ public class Animations {
     public void playAnimation(Button button) {
         timeline.play(); // play animation
         timeline.setOnFinished(event -> {
-      	  button.setVisible(true);
+      	  button.setDisable(false);
+      	  Main.back.setDisable(false);
         });
     }
 }
