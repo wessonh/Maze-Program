@@ -1,37 +1,34 @@
 package application;
-import java.util.Objects;
-import java.util.Queue;
-import java.util.PriorityQueue;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.Label;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-import java.util.ArrayList; 
+
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class Solve {
 
-    private Animations animations = new Animations();
+    private final Animations animations;
     private int delay;
-
     public Solve() {
 
-         // makes new animation object
+        this.animations = new Animations(); // makes new animation object
         this.delay = 0; // sets delay to O
+
     }
 
-    public void start(Group group, Node[][]maze, Button button) {
+    public void start(Group group, Node[][]maze) {
 
         try {
-      	  	
+
             Timeline timeline = new Timeline();// creates new timeline
             int delay = 0; // line visibility delay set to zero
 
-            
+
             for (javafx.scene.Node node : group.getChildren()) { // for loop iterates through every node in group
 
                 if (node instanceof Line line) { // if the current node is an instanceof line
@@ -41,109 +38,115 @@ public class Solve {
                 }
             }
             timeline.setOnFinished(e -> { // when maze generation animation is finished.
-                 // new solve
+                // new solve
                 search(maze);  // run the solution search
-                animate(button); // animate solution
+
             });
             timeline.play(); // starts animation
-            
-            
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
-    //private void evaluate(Node neighbor, Node source)
+
+
     public void search(Node[][] maze) {
 
-   	 
         for (Node[] nodes : maze) { // enhanced for loop, sets all nodes in maze array to unvisited
 
             for (int j = 0; j < maze[0].length; j++) {
 
-                nodes[j].setVisited(false); // set all nodes as unvisited
-                nodes[j].distance = -1;
+                nodes[j].setVisited(false);  // set all nodes as unvisited
             }
         }
-        /*
-        Queue <Node> unsettled = new PriorityQueue<>();
-        unsettled.add(maze[0][0]);
-        
-        while(!unsettled.isEmpty()) {
-      	  
-      	  Node current = unsettled.poll();
-      	  for(Node neighbor : current.getNeighbors()) {
-      		  if(!neighbor.settled) {
-      			  evaluate(neighbor);
-      			  unsettled.add(neighbor);
-      		  }
-      		  
-      	  }
-      	  current.settled = true;
-        }*/
+
         SolveQueue<Node> list = new SolveQueue<>(); // initializes queue and add the start node
         maze[0][0].setVisited(true);
         list.enqueue(maze[0][0]);
-       
-        Node end = null;
 
         while(!list.isEmpty()) { // while loop for Breadth First Search
 
             Node current = list.dequeue(); // polls node from the queue
-            
+            animations.addToAnimation(current, delay); // add frame for the current node to addToAnimation timeline
+            delay += 15; // delay for next node
+
             if(current.isEnd()) { // if reached end, end loop
-            	 end = current;
                 break;
             }
             else {
                 for(Node neighbor : current.getNeighbors()) {
-                    if(neighbor.isVisited()) {  // check if the neighbor is unvisited
+                    if(neighbor.isVisited()) {  // check if the neighbor is visited
                         // If neighbor is above current node and no walls are blocking way, visit and add to queue
                         if(neighbor.getRow() < current.getRow() && !neighbor.isDown() && !current.isUp()) {
                             neighbor.setVisited(true);
                             list.enqueue(neighbor);
-                            neighbor.distance = current.distance + 1;
-                            neighbor.parent = current;
                         }
                         // If neighbor is below current node and no walls are blocking way, visit and add to queue
                         else if(neighbor.getRow() > current.getRow() && !neighbor.isUp() && !current.isDown()) {
                             neighbor.setVisited(true);
                             list.enqueue(neighbor);
-                            neighbor.distance = current.distance + 1;
-                            neighbor.parent = current;
                         }
                         // If neighbor is left of current node and no walls are blocking way, visit and add to queue
                         else if(neighbor.getCol() < current.getCol() && !neighbor.isRight() && !current.isLeft()) {
                             neighbor.setVisited(true);
                             list.enqueue(neighbor);
-                            neighbor.distance = current.distance + 1;
-                            neighbor.parent = current;
                         }
                         // If neighbor is right of current node and no walls are blocking way, visit and add to queue
                         else if(neighbor.getCol() > current.getCol() && !neighbor.isLeft() && !current.isRight()) {
                             neighbor.setVisited(true);
                             list.enqueue(neighbor);
-                            neighbor.distance = current.distance + 1;
-                            neighbor.parent = current;
                         }
                     }
                 }
             }
         }
-        Node temp = end;
-        ArrayList<Node> path = new ArrayList<>();
-        while (temp != null){
-      	  path.add(temp);
-           temp = temp.parent;
-        }
-        
-        for(int i = path.size()-1; i >=0; i-- ) {
-      	  animations.addToAnimation(path.get(i), delay); // add frame for the current node to addToAnimation timeline
-           delay += 15; // delay for next node
+    }
+
+    public Timeline animate(){ // method for adding frame to animation with chosen delay, animates the breadth first search
+        animations.playAnimation();
+        return animations.getTimeline();
+    }
+
+    public void animateSolve(Node[][] maze, Group group, AtomicBoolean solverDone) {
+        search(maze); // runs search method from solve
+        Timeline solveTimeline = animate(); // animates the maze solver
+
+        solveTimeline.setOnFinished(e -> {
+            solverDone.set(true);
+        });
+        solveTimeline.play();
+    }
+
+    // this isn't used now because of the Animations class handling the displaying this, but I am keeping it just because
+    public void print(Group group, Node[][] maze) {
+        int row = maze.length;
+        int col = maze[0].length;
+        for(int y = 0; y < row; y++) {
+            for(int x = 0; x < col; x++) {
+                if(maze[y][x].isVisited()) {
+                    Text text = new Text(x*25 + 37.5, y*25 + 37.5, "*");
+                    group.getChildren().add(text);
+                }
+                if(maze[y][x].isUp()) {
+                    Line top = new Line(x*25 + 25,y*25 + 25,x*25+25 + 25,y*25 + 25);
+
+                    group.getChildren().add(top);
+                }
+                if(maze[y][x].isRight()) {
+                    Line right = new Line(x*25+25 + 25,y*25 +25,x*25+25 + 25,y*25+25 + 25);
+                    group.getChildren().add(right);
+                }
+                if(maze[y][x].isDown()) {
+                    Line bottom =new Line(x*25+25 + 25,y*25+25 + 25,x*25 + 25,y*25+25 + 25);
+                    group.getChildren().add(bottom);
+                }
+                if(maze[y][x].isLeft()) {
+                    Line left = new Line(x*25 + 25,y*25+25 + 25,x*25 + 25,y*25+25);
+                    group.getChildren().add(left);
+                }
+            }
         }
     }
 
-    public void animate(Button button){ // method for adding frame to animation with chosen delay, animates the breadth first search
-        animations.playAnimation(button);
-    }
 }
