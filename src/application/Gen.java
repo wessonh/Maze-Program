@@ -1,36 +1,29 @@
 package application;
-import javafx.scene.control.Button;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.animation.Timeline;
-//import java.util.Stack;
 import static application.Animations.animateLines;
-import javafx.animation.KeyFrame;
-import javafx.util.Duration;
-import javafx.scene.Group;
 
 public class Gen {
-    
-		
     public static Node[][] create(int row, int col) {
-        
-   	  
-   
-   	  
+
         Node[][] maze = new Node[row][col];// initializes maze array with number of row and col
 
         for (int i = 0; i < row; i++) {// for loop fills row and col with nodes
             for (int k = 0; k < col; k++) {
-                
+
                 maze[i][k] = new Node(i, k);
             }
         }
-        
+
         for (int i = 0; i < row; i++) { // for each Node in maze, add neighbors to neighbor list.
             for (int k = 0; k < col; k++) {
-                
+
                 Node node = maze[i][k];
 
                 if (i > 0) { // if node isn't in first row, add node above to neighbor list
@@ -47,14 +40,10 @@ public class Gen {
                 }
             }
         }
-        
+
         generateMaze(row, col, maze); // calls generateMaze
         print(row, col, maze); // Calls the print method to print the generated maze.
         return maze;
-    }
-    
-    public static void askSize() {
-   	 
     }
     private static void generateMaze(int row, int col, Node[][] maze) {
         // makes stack to keep track of visited nodes
@@ -82,6 +71,7 @@ public class Gen {
                 Node chosen = unvisitedNeighbors.get((int) (Math.random() * unvisitedNeighbors.size()));
                 chosen.setVisited(true); // mark as visited
                 stack.push(current);
+                
                 stack.push(chosen);
 
                 // determines direction of the chosen neighbor
@@ -103,18 +93,20 @@ public class Gen {
                 }
             }
         }
-        
+        if (end.isVisited()) { // Check if end node has been visited
+            return;
+        }
         start.setUp(false); // Set start and end nodes
         end.setDown(false);
         end.setEnd(true);
     }
     private static void print(int row, int col, Node[][] maze) {
-        
+
         List<Line> visibleLines = new ArrayList<>();// Create list for visible lines and all visited nodes
 
         for (int y = 0; y < row; y++) { // for loops to print the maze rows and cols
             for (int x = 0; x < col; x++) {
-                
+
                 if (maze[y][x].isUp()) {
                     Line top = new Line(x * 25 + 25, y * 25 + 25, x * 25 + 25 + 25, y * 25 + 25);
                     if (y == 0) {
@@ -125,7 +117,6 @@ public class Gen {
                     top.setVisible(false);
                     Main.group2.getChildren().add(top);
                     visibleLines.add(top);
-
                 }
                 if (maze[y][x].isRight()) {
                     Line right = new Line(x * 25 + 25 + 25, y * 25 + 25, x * 25 + 25 + 25, y * 25 + 25 + 25);
@@ -150,7 +141,7 @@ public class Gen {
                     visibleLines.add(bottom);
                 }
                 if (maze[y][x].isLeft()) {
-                    
+
                     Line left = new Line(x * 25 + 25, y * 25 + 25 + 25, x * 25 + 25, y * 25 + 25);
                     if (x == 0) {
                         left.setStroke(Color.BLUE);//  left blue border
@@ -164,34 +155,35 @@ public class Gen {
             }
         }
         animateLines(visibleLines); // animates the visible lines
-        
     }
-    
-    static Node[][] animateGen(Group group, int x, int y) {
-       Node[][] maze = create(x, y);
-       Timeline timeline = new Timeline();
-       int delay = 0;
 
-       for (javafx.scene.Node node : group.getChildren()) {
-           if (node instanceof Line line) {
-               timeline.getKeyFrames().add(new KeyFrame(Duration.millis(delay), e -> line.setVisible(true)));
-               delay += 5;
-           }
-       }
-       timeline.play();
-       timeline.setOnFinished(event -> {
-     	  
-      	 Main.solveButton.setDisable(false);
-      	 Main.saveButton.setDisable(false);
-      	 Main.clearButton.setDisable(false);
-      	 Main.back.setDisable(false);
-       });
-       
-       return maze;
-   }
-    
+    static Node[][] animateGen(Group group, int x, int y) {
+        Node[][] maze = create(x, y);
+        Timeline timeline = new Timeline();
+        int delay = 0;
+
+        for (javafx.scene.Node node : group.getChildren()) {
+            if (node instanceof Line line) {
+                timeline.getKeyFrames().add(new KeyFrame(Duration.millis(delay), e -> line.setVisible(true)));
+                delay += 5;
+            }
+        }
+        timeline.play();
+        timeline.setOnFinished(event -> {
+      	  
+      	  
+      	  Main.back.setDisable(false);
+      	  Main.clearButton.setDisable(false);
+      	  Main.solveButton.setDisable(false);
+      	  Main.saveButton.setDisable(false);
+      	  
+      	  
+        });
+        return maze;
+    }
+
     public void render(int row, int col, Node[][] maze) {
 
-       print(row, col, maze); // Calls the print method to print the maze.
+        print(row, col, maze); // Calls the print method to print the maze.
     }
 }
