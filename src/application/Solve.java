@@ -12,7 +12,9 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import java.util.ArrayList; 
+import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class Solve {
 
     private Animations animations = new Animations();
@@ -43,7 +45,7 @@ public class Solve {
             timeline.setOnFinished(e -> { // when maze generation animation is finished.
                  // new solve
                 search(maze);  // run the solution search
-                animate(button); // animate solution
+                animate(); // animate solution
             });
             timeline.play(); // starts animation
             
@@ -142,8 +144,26 @@ public class Solve {
            delay += 15; // delay for next node
         }
     }
+    
+    public void animateSolve(Node[][] maze, Group group, AtomicBoolean solverDone) {
+       
+       search(maze); // runs search method from solve
+       Timeline solveTimeline = animate(); // animates the maze solver
 
-    public void animate(Button button){ // method for adding frame to animation with chosen delay, animates the breadth first search
-        animations.playAnimation(button);
+       solveTimeline.setOnFinished(e -> {
+           solverDone.set(true);
+           
+       });
+       solveTimeline.play();
     }
+
+    public Timeline animate(){ // method for adding frame to animation with chosen delay, animates the breadth first search
+       Timeline timeline = new Timeline();
+
+       // Add your animation frames to the timeline
+
+       animations.playAnimation();
+
+       return timeline;
+   }
 }
