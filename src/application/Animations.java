@@ -1,7 +1,6 @@
 package application;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.control.Button;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -10,7 +9,6 @@ import java.util.List;
 public class Animations {
 
     private final Timeline timeline;
-
 
     public Animations() {
 
@@ -35,6 +33,7 @@ public class Animations {
 
         timeline.getKeyFrames().add(keyFrame);// Add key frame to the timeline
         timeline.setCycleCount(lines.size()); // sets cycle count to size of lines list
+
     }
 
     public void addToAnimation(Node current, int delay) { // method adds nodes from solver path as frames in animation
@@ -42,18 +41,19 @@ public class Animations {
         timeline.getKeyFrames().add(new KeyFrame(Duration.millis(delay), e -> { // adds nodes from solver as frames
             // marks visited with *
             Text text = new Text(current.getCol() * 25 + 37.5, current.getRow() * 25 + 37.5, "*");
-            //sets * color to green from css style sheet
-
-            text.getStyleClass().add("solve-character");
             // for nodes in group, add * to display
+
             Main.group2.getChildren().add(text); // for nodes in group, add * to display
         }));
     }
 
-    public void playAnimation(Button button) {
+    public void playAnimation() {
         timeline.play(); // play animation
         timeline.setOnFinished(event -> {
-            button.setVisible(true);
+
+            Main.back.setDisable(false);
+            Main.clearButton.setDisable(false);
+
         });
     }
 }
