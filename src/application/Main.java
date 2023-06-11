@@ -1,5 +1,5 @@
 package application;
-import javafx.animation.KeyFrame;
+import javafx.animation.KeyFrame; 
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -18,15 +18,15 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.control.Button;
 import javafx.scene.Parent;
 import javafx.scene.text.Text;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Label;
+
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Main extends Application {
-
-    static final Group group = new Group(); // group to store nodes for scene display
+/*
+    //static final Group group = new Group(); // group to store nodes for scene display
     static final Group group2 = new Group();
-    static final Group group3 = new Group();
+    
     static Node[][] maze;
     static Stage stage;
     //static Button button = new Button();
@@ -40,32 +40,27 @@ public class Main extends Application {
     static Button solveButton = new Button("Solve Maze");
     static Button saveButton = new Button("Save Maze");
     
-    @Override // entry point for javaFX
+    //@Override // entry point for javaFX
     public void start(Stage primaryStage) {
 
         try {
       	  
       	  	
-      	  	stage = primaryStage;
-      	  	stage.setResizable(false);
-      	  	Scene scene = new Scene(group, 600, 600); // creates a new scene with group as the root, this is where you adjust window size
-            Scene scene2 = new Scene(group2, 600, 600);
-            Scene scene3 = new Scene(group3, 600, 600);
+      	  	
+      	  	
+
             
-            
+               
             saveButton.setLayoutX(400);
             saveButton.setLayoutY(550);
             
 
+            
+            
+            
             Button loadButton = new Button("Load Maze");
             loadButton.setLayoutX(300);
             loadButton.setLayoutY(550);
-            
-            
-            Button loadButton2 = new Button("Load Maze");
-            loadButton2.setLayoutX(200);
-            loadButton2.setLayoutY(400);
-            group.getChildren().add(loadButton2);
             
             
             
@@ -81,14 +76,10 @@ public class Main extends Application {
 	 	  	   back.setTranslateX(500);
 	         back.setTranslateY(550);
 	         
-            TextField enterRows = new TextField();
-            enterRows.setTranslateX(350);
-            enterRows.setTranslateY(50);
             
             
-            TextField enterColumns = new TextField();
-            enterColumns.setTranslateX(350);
-            enterColumns.setTranslateY(100);
+            
+            
             
             
             
@@ -96,36 +87,16 @@ public class Main extends Application {
             clearButton.setTranslateY(550);
             
 	         
-	         Button next = new Button("Generate Maze");
-	 	  	   next.setTranslateX(350);
-	         next.setTranslateY(550);
+	         
 	         
 	         	
-	         Label row = new Label ("Enter the number of rows, 5 - 20, for maze:");
-	         row.setTranslateX(100);
-	         row.setTranslateY(50);
 	         
 	         
-	         Label exception = new Label ("Error: Input must be an integer between 5 and 20");
-	         exception.setTranslateX(300);
-	         exception.setTranslateY(200);
 	         
-	         Label columns = new Label ("Enter number of columns, 5 - 20, for maze:");
-	         columns.setTranslateX(100);
-	         columns.setTranslateY(100);
+	         	         
 	         
 	         
-	         Button newCustom = new Button("New Custom Maze");
-	         newCustom.setTranslateX(250);
-	         newCustom.setTranslateY(550);
 	         
-	         newCustom.setOnAction(value -> {
-	         	
-	         	group2.getChildren().clear();
-	         	stage.setScene(scene3);
-	         	
-	         	
-	         });
 	         
 	         next.setOnAction(value ->  {
 	         	try {
@@ -155,13 +126,6 @@ public class Main extends Application {
 	         
 	         
 		         
-	        
-	         
-	         
-	          
-	         
-	         
-	         
 	         
 	         Button genButton = new Button("Generate Maze");
 	         genButton.setTranslateX(10);
@@ -210,59 +174,9 @@ public class Main extends Application {
 	      	 
 	       });
   	         
-      	  	Button ranButton = new Button("Random Maze");
-      	  	ranButton.setTranslateX(200);
-      	  	ranButton.setTranslateY(300);
-      	   
-            Button custom = new Button("Custom Maze");
-      	  	custom.setTranslateX(200);
-            custom.setTranslateY(350);
+      	  	
             
-            custom.setOnAction(value ->  {
-            	group3.getChildren().add(back);
-            	group3.getChildren().add(enterRows);
-            	group3.getChildren().add(enterColumns);
-            	group3.getChildren().add(row);
-            	group3.getChildren().add(columns);
-            	group3.getChildren().add(next);
-            	stage.setScene(scene3);
-  	      	   
-            });
             
-            Text text = new Text("""
-            		
-            		Welcome to the CS240 Maze Solver and Generator
-            		""");
-            text.setTranslateX(100);
-            text.setTranslateY(100);
-            
-            group.getChildren().add(text);
-            group.getChildren().add(ranButton);
-            group.getChildren().add(custom);
-            
-            ranButton.setOnAction(value ->  {
-            	y = (int)Math.floor(Math.random() * (20 - 5 + 1) + 5);
-  	         	x = (int)Math.floor(Math.random() * (20 - 5 + 1) + 5);
-            	stage.setScene(scene2);
-            	group2.getChildren().add(clearButton);
-  	         	Gen generator = new Gen();
-  	         	group2.getChildren().add(genButton);
-  	         	group2.getChildren().add(back);
-  	         	clearButton.setDisable(true);
-  	      	   genButton.setDisable(true);
-  	      	   back.setDisable(true);
-  	      	   solveButton.setDisable(true);
-  	      	   group2.getChildren().add(saveButton);
-  	      	   group2.getChildren().add(solveButton);
-  	      	   saveButton.setDisable(true);
-  	      	   
-  	      	   maze = Gen.animateGen(group2, x, y);
-  	      	   
-  	      	   
-             
-  	      	   
-  	      	   
-            });
             
             loadButton2.setOnAction(e -> {
             	
@@ -300,7 +214,7 @@ public class Main extends Application {
             
             solveButton.setOnAction(e -> {
                Solve solver = new Solve();
-               solver.animateSolve(maze, group, solverDone);
+               solver.animateSolve(maze, group2, solverDone);
                solveButton.setDisable(true);
                clearButton.setDisable(true);
                back.setDisable(true);
@@ -308,20 +222,36 @@ public class Main extends Application {
             });
 
             
-            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("application.css")).toExternalForm()); // adds the CSS style sheet
+            
       	  	
-            stage.setScene(scene);
-            stage.show(); // displays the window*/
+            
             
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+    */
     
     public static void main(String[] args) {
-   	
+   	 
    	 launch(args);
    	 
     }
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+  	 
+  	 IntroSceneController introScene = new IntroSceneController(primaryStage);
+  	 MiddleSceneController middleScene = new MiddleSceneController(primaryStage);
+  	 DrawMazeSceneController drawScene = new DrawMazeSceneController(primaryStage);
+    
+    introScene.setScenes(middleScene, drawScene);
+    middleScene.setScenes(introScene, drawScene);
+    drawScene.setScenes(introScene, middleScene);
+    
+  	 introScene.start();
+  	 middleScene.start();
+  	 drawScene.start();
+		
+	}
 }

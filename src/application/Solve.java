@@ -44,7 +44,7 @@ public class Solve {
             }
             timeline.setOnFinished(e -> { // when maze generation animation is finished.
                  // new solve
-                search(maze);  // run the solution search
+                search(maze, group);  // run the solution search
                 animate(); // animate solution
             });
             timeline.play(); // starts animation
@@ -56,7 +56,7 @@ public class Solve {
     }
     
     //private void evaluate(Node neighbor, Node source)
-    public void search(Node[][] maze) {
+    public void search(Node[][] maze, Group group) {
 
    	 
         for (Node[] nodes : maze) { // enhanced for loop, sets all nodes in maze array to unvisited
@@ -140,14 +140,14 @@ public class Solve {
         }
         
         for(int i = path.size()-1; i >=0; i-- ) {
-      	  animations.addToAnimation(path.get(i), delay); // add frame for the current node to addToAnimation timeline
+      	  animations.addToAnimation(path.get(i), delay, group); // add frame for the current node to addToAnimation timeline
            delay += 15; // delay for next node
         }
     }
     
     public void animateSolve(Node[][] maze, Group group, AtomicBoolean solverDone) {
        
-       search(maze); // runs search method from solve
+       search(maze, group); // runs search method from solve
        Timeline solveTimeline = animate(); // animates the maze solver
 
        solveTimeline.setOnFinished(e -> {

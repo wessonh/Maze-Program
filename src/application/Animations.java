@@ -1,6 +1,7 @@
 package application;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.shape.Line;
@@ -41,14 +42,14 @@ public class Animations {
 
     }
 
-    public void addToAnimation(Node current, int delay) { // method adds nodes from solver path as frames in animation
+    public void addToAnimation(Node current, int delay, Group group) { // method adds nodes from solver path as frames in animation
 
         timeline.getKeyFrames().add(new KeyFrame(Duration.millis(delay), e -> { // adds nodes from solver as frames
             // marks visited with *
             Text text = new Text(current.getCol() * 25 + 37.5, current.getRow() * 25 + 37.5, "*");
             // for nodes in group, add * to display
             
-            Main.group2.getChildren().add(text); // for nodes in group, add * to display
+            group.getChildren().add(text); // for nodes in group, add * to display
         }));
     }
 
@@ -57,8 +58,8 @@ public class Animations {
         timeline.setOnFinished(event -> {
       	  
       	  
-      	  Main.back.setDisable(false);
-      	  Main.clearButton.setDisable(false);
+      	  //back.setDisable(false);
+      	  //clearButton.setDisable(false);
       	  
       	  
         });
