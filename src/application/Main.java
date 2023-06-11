@@ -14,10 +14,7 @@ public class Main extends Application {
     static Node[][] maze;
     static Stage stage;
     static AtomicBoolean solverDone = new AtomicBoolean(false);
-    static AtomicBoolean mazeGenerated = new AtomicBoolean(false);
-    static Button button = new Button();
     private static final Gen gen = new Gen();
-    private static final SaveLoad saveLoad = new SaveLoad(stage);
 
     @Override // entry point for javaFX
     public void start(Stage primaryStage) {
@@ -41,12 +38,14 @@ public class Main extends Application {
             group.getChildren().add(text);
             group.getChildren().add(startButton);
 
-            startButton.setOnAction(value ->  {
+            startButton.setOnAction(value -> {
                 stage.setScene(scene2);
             });
 
+            String css = Objects.requireNonNull(getClass().getResource("application.css")).toExternalForm();
 
-            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("application.css")).toExternalForm()); // adds the CSS style sheet
+            scene.getStylesheets().add(css);  // adds the CSS style sheet to scene
+            scene2.getStylesheets().add(css); // adds the CSS style sheet to scene2
 
             stage.setScene(scene);
             stage.show(); // displays the window
@@ -55,7 +54,6 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
-
 
     public static void main(String[] args) {
 
@@ -89,9 +87,12 @@ public class Main extends Application {
             group2.getChildren().add(clearButton);
             clearButton.setVisible(true);  // sets the clear button to visible
             saveButton.setDisable(false);  // enables the save button
-            maze = Gen.animateGen(group2);
-            genButton.setDisable(true); // disables gen Button
-            solveButton.setDisable(false); // re-enables solve button
+            Gen.animateGen(group2, () -> {
+                maze = Gen.create(15, 15);  // Regenerate the maze
+                gen.render(maze.length, maze[0].length, maze);
+                genButton.setDisable(true);
+                solveButton.setDisable(false);
+            });
         });
 
         solveButton.setOnAction(e -> {
@@ -120,17 +121,17 @@ public class Main extends Application {
                 maze = loadedMaze;
                 gen.render(loadedMaze.length, loadedMaze[0].length, loadedMaze);
                 group2.getChildren().clear();
-                maze = Gen.animateGen(group2);
+                maze = Gen.animateGen(group2, () -> {
+                    genButton.setDisable(true);
+                    solveButton.setDisable(false);
+                    clearButton.setVisible(true);
+                });
 
                 // Add all necessary buttons back to group2 after rendering
                 group2.getChildren().addAll(genButton, solveButton, saveButton, loadButton, clearButton);
-                genButton.setDisable(false); // Enable gen Button
-                solveButton.setDisable(false);
-                clearButton.setVisible(true);
-
             }
         });
-        
+
         launch(args);
     }
 }
