@@ -1,18 +1,13 @@
 package application;
-import java.util.Objects;
-import java.util.Queue;
-import java.util.PriorityQueue;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Line;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-import java.util.ArrayList; 
+import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class Solve {
 
     private Animations animations = new Animations();
@@ -20,18 +15,18 @@ public class Solve {
 
     public Solve() {
 
-         // makes new animation object
+        // makes new animation object
         this.delay = 0; // sets delay to O
     }
 
     public void start(Group group, Node[][]maze, Button button) {
 
         try {
-      	  	
+
             Timeline timeline = new Timeline();// creates new timeline
             int delay = 0; // line visibility delay set to zero
 
-            
+
             for (javafx.scene.Node node : group.getChildren()) { // for loop iterates through every node in group
 
                 if (node instanceof Line line) { // if the current node is an instanceof line
@@ -41,22 +36,22 @@ public class Solve {
                 }
             }
             timeline.setOnFinished(e -> { // when maze generation animation is finished.
-                 // new solve
+                // new solve
                 search(maze);  // run the solution search
                 animate(button); // animate solution
             });
             timeline.play(); // starts animation
-            
-            
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     //private void evaluate(Node neighbor, Node source)
     public void search(Node[][] maze) {
 
-   	 
+
         for (Node[] nodes : maze) { // enhanced for loop, sets all nodes in maze array to unvisited
 
             for (int j = 0; j < maze[0].length; j++) {
@@ -65,34 +60,19 @@ public class Solve {
                 nodes[j].distance = -1;
             }
         }
-        /*
-        Queue <Node> unsettled = new PriorityQueue<>();
-        unsettled.add(maze[0][0]);
-        
-        while(!unsettled.isEmpty()) {
-      	  
-      	  Node current = unsettled.poll();
-      	  for(Node neighbor : current.getNeighbors()) {
-      		  if(!neighbor.settled) {
-      			  evaluate(neighbor);
-      			  unsettled.add(neighbor);
-      		  }
-      		  
-      	  }
-      	  current.settled = true;
-        }*/
+
         SolveQueue<Node> list = new SolveQueue<>(); // initializes queue and add the start node
         maze[0][0].setVisited(true);
         list.enqueue(maze[0][0]);
-       
+
         Node end = null;
 
         while(!list.isEmpty()) { // while loop for Breadth First Search
 
             Node current = list.dequeue(); // polls node from the queue
-            
+
             if(current.isEnd()) { // if reached end, end loop
-            	 end = current;
+                end = current;
                 break;
             }
             else {
@@ -133,17 +113,32 @@ public class Solve {
         Node temp = end;
         ArrayList<Node> path = new ArrayList<>();
         while (temp != null){
-      	  path.add(temp);
-           temp = temp.parent;
+            path.add(temp);
+            temp = temp.parent;
         }
-        
+
         for(int i = path.size()-1; i >=0; i-- ) {
-      	  animations.addToAnimation(path.get(i), delay); // add frame for the current node to addToAnimation timeline
-           delay += 15; // delay for next node
+            animations.addToAnimation(path.get(i), delay); // add frame for the current node to addToAnimation timeline
+            delay += 15; // delay for next node
         }
     }
 
-    public void animate(Button button){ // method for adding frame to animation with chosen delay, animates the breadth first search
-        animations.playAnimation(button);
+    public void animateSolve(Node[][] maze, Group group, AtomicBoolean solverDone, Button solveButton) {
+
+        solveButton.setDisable(true);
+        search(maze); // runs search method from solve
+        Timeline solveTimeline = animate(solveButton); // animates the maze solver
+
+        solveTimeline.setOnFinished(e -> {
+            solverDone.set(true);
+        });
+        solveTimeline.play();
+    }
+
+    public Timeline animate(Button button){ // method for adding frame to animation with chosen delay, animates the breadth first search
+
+        Timeline timeline = new Timeline();
+        animations.playAnimation(button); // adds animation frames to the timeline
+        return timeline;
     }
 }
