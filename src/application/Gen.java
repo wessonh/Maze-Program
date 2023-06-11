@@ -2,6 +2,7 @@ package application;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Group;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
 import java.util.ArrayList;
@@ -44,7 +45,9 @@ public class Gen {
         print(row, col, maze); // Calls the print method to print the generated maze.
         return maze;
     }
+
     private static void generateMaze(int row, int col, Node[][] maze) {
+
         // makes stack to keep track of visited nodes
         Stack<Node> stack = new Stack<>();
         // START NODE. sets the start node as top left. we might want to let the user able to adjust this
@@ -70,6 +73,7 @@ public class Gen {
                 Node chosen = unvisitedNeighbors.get((int) (Math.random() * unvisitedNeighbors.size()));
                 chosen.setVisited(true); // mark as visited
                 stack.push(current);
+
                 stack.push(chosen);
 
                 // determines direction of the chosen neighbor
@@ -98,6 +102,7 @@ public class Gen {
         end.setDown(false);
         end.setEnd(true);
     }
+
     private static void print(int row, int col, Node[][] maze) {
 
         List<Line> visibleLines = new ArrayList<>();// Create list for visible lines and all visited nodes
@@ -108,9 +113,9 @@ public class Gen {
                 if (maze[y][x].isUp()) {
                     Line top = new Line(x * 25 + 25, y * 25 + 25, x * 25 + 25 + 25, y * 25 + 25);
                     if (y == 0) {
-                        top.getStyleClass().add("maze-line-up"); // top blue border css class
+                        top.setStroke(Color.BLUE); // top blue border
                     } else {
-                        top.getStyleClass().add("maze-line-up-animating"); // else red
+                        top.setStroke(Color.RED); // else red
                     }
                     top.setVisible(false);
                     Main.group2.getChildren().add(top);
@@ -119,9 +124,9 @@ public class Gen {
                 if (maze[y][x].isRight()) {
                     Line right = new Line(x * 25 + 25 + 25, y * 25 + 25, x * 25 + 25 + 25, y * 25 + 25 + 25);
                     if (x == col - 1) {
-                        right.getStyleClass().add("maze-line-right"); // right blue border
+                        right.setStroke(Color.BLUE); // right blue border
                     } else {
-                        right.getStyleClass().add("maze-line-right-animating"); // else red
+                        right.setStroke(Color.RED); // else red
                     }
                     right.setVisible(false);
                     Main.group2.getChildren().add(right);
@@ -130,9 +135,9 @@ public class Gen {
                 if (maze[y][x].isDown()) {
                     Line bottom = new Line(x * 25 + 25 + 25, y * 25 + 25 + 25, x * 25 + 25, y * 25 + 25 + 25);
                     if (y == row - 1) {
-                        bottom.getStyleClass().add("maze-line-down"); // bottom blue border
+                        bottom.setStroke(Color.BLUE); // bottom blue border
                     } else {
-                        bottom.getStyleClass().add("maze-line-down-animating"); // else red
+                        bottom.setStroke(Color.RED); // else red
                     }
                     bottom.setVisible(false);
                     Main.group2.getChildren().add(bottom);
@@ -142,9 +147,9 @@ public class Gen {
 
                     Line left = new Line(x * 25 + 25, y * 25 + 25 + 25, x * 25 + 25, y * 25 + 25);
                     if (x == 0) {
-                        left.getStyleClass().add("maze-line-left"); // right blue border
+                        left.setStroke(Color.BLUE);//  left blue border
                     } else {
-                        left.getStyleClass().add("maze-line-right-animating"); // else red
+                        left.setStroke(Color.RED); // else red
                     }
                     left.setVisible(false);
                     Main.group2.getChildren().add(left);
@@ -155,8 +160,32 @@ public class Gen {
         animateLines(visibleLines); // animates the visible lines
     }
 
-    static Node[][] animateGen(Group group, Runnable callback) {
-        Node[][] maze = create(15, 15);
+    static Node[][] animateGen(int x, int y) {
+        Node[][] maze = create(x, y);
+        Timeline timeline = new Timeline();
+        int delay = 0;
+
+        for (javafx.scene.Node node : Main.group2.getChildren()) {
+            if (node instanceof Line line) {
+                timeline.getKeyFrames().add(new KeyFrame(Duration.millis(delay), e -> line.setVisible(true)));
+                delay += 5;
+            }
+        }
+        timeline.play();
+        timeline.setOnFinished(event -> {
+
+            Main.back.setDisable(false);
+            Main.clearButton.setDisable(false);
+            Main.solveButton.setDisable(false);
+            Main.saveButton.setDisable(false);
+
+        });
+        return maze;
+    }
+
+    public static void animateLoadedMaze(Group group, Node[][] maze, int row, int col) {
+        print(row, col, maze); // Calls the print method to print the maze.
+
         Timeline timeline = new Timeline();
         int delay = 0;
 
@@ -166,13 +195,14 @@ public class Gen {
                 delay += 5;
             }
         }
-        timeline.setOnFinished(e -> callback.run());
         timeline.play();
-        return maze;
-    }
+        timeline.setOnFinished(event -> {
 
-    public void render(int row, int col, Node[][] maze) {
+            Main.back.setDisable(false);
+            Main.clearButton.setDisable(false);
+            Main.solveButton.setDisable(false);
+            Main.saveButton.setDisable(false);
 
-        print(row, col, maze); // Calls the print method to print the maze.
+        });
     }
 }
