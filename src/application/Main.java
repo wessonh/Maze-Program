@@ -1,14 +1,22 @@
 package application;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.Objects;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.control.Button;
+import javafx.scene.Parent;
 import javafx.scene.text.Text;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
@@ -23,7 +31,6 @@ public class Main extends Application {
     static Stage stage;
     //static Button button = new Button();
     public static Button back = new Button("Back");
-
     static int y, x;
     private static final SaveLoad saveLoad = new SaveLoad(stage);
     static AtomicBoolean solverDone = new AtomicBoolean(false);
@@ -32,12 +39,14 @@ public class Main extends Application {
     static Button clearButton = new Button("Clear Maze");
     static Button solveButton = new Button("Solve Maze");
     static Button saveButton = new Button("Save Maze");
-
+    
     @Override // entry point for javaFX
     public void start(Stage primaryStage) {
 
         try {
-	stage = primaryStage;
+      	  
+      	  	
+      	  	stage = primaryStage;
       	  	stage.setResizable(false);
       	  	Scene scene = new Scene(group, 600, 600); // creates a new scene with group as the root, this is where you adjust window size
             Scene scene2 = new Scene(group2, 600, 600);
@@ -204,12 +213,12 @@ public class Main extends Application {
       	  	Button ranButton = new Button("Random Maze");
       	  	ranButton.setTranslateX(200);
       	  	ranButton.setTranslateY(300);
+      	   
             Button custom = new Button("Custom Maze");
-            custom.setTranslateX(200);
+      	  	custom.setTranslateX(200);
             custom.setTranslateY(350);
-
+            
             custom.setOnAction(value ->  {
-
             	group3.getChildren().add(back);
             	group3.getChildren().add(enterRows);
             	group3.getChildren().add(enterColumns);
@@ -219,18 +228,19 @@ public class Main extends Application {
             	stage.setScene(scene3);
   	      	   
             });
-
+            
             Text text = new Text("""
             		
             		Welcome to the CS240 Maze Solver and Generator
             		""");
             text.setTranslateX(100);
             text.setTranslateY(100);
-
+            
             group.getChildren().add(text);
             group.getChildren().add(ranButton);
             group.getChildren().add(custom);
- ranButton.setOnAction(value ->  {
+            
+            ranButton.setOnAction(value ->  {
             	y = (int)Math.floor(Math.random() * (20 - 5 + 1) + 5);
   	         	x = (int)Math.floor(Math.random() * (20 - 5 + 1) + 5);
             	stage.setScene(scene2);
@@ -262,7 +272,7 @@ public class Main extends Application {
                    maze = loadedMaze;
                    gen.render(loadedMaze.length, loadedMaze[0].length, loadedMaze);
                    group2.getChildren().clear();
-                   maze = Gen.animateGen(group2, x, y);
+                   maze = Gen.animateGen(group2, y, x);
                
                    // Add all necessary buttons back to group2 after rendering
                    group2.getChildren().addAll(solveButton, loadButton, back);
@@ -278,7 +288,7 @@ public class Main extends Application {
                    maze = loadedMaze;
                    gen.render(loadedMaze.length, loadedMaze[0].length, loadedMaze);
                    group2.getChildren().clear();
-                   maze = Gen.animateGen(group2, x, y);
+                   maze = Gen.animateGen(group2, y, x);
                
                    // Add all necessary buttons back to group2 after rendering
                    group2.getChildren().addAll(solveButton, loadButton, back);
@@ -297,8 +307,9 @@ public class Main extends Application {
 
             });
 
+            
             scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("application.css")).toExternalForm()); // adds the CSS style sheet
-
+      	  	
             stage.setScene(scene);
             stage.show(); // displays the window*/
             
@@ -306,8 +317,11 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
-
+    
+    
     public static void main(String[] args) {
-      launch(args);
+   	 
+   	 launch(args);
+   	 
     }
 }
