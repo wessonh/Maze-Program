@@ -37,6 +37,8 @@ public class Animations {
 
         timeline.getKeyFrames().add(keyFrame);// Add key frame to the timeline
         timeline.setCycleCount(lines.size()); // sets cycle count to size of lines list
+        
+
     }
 
     public void addToAnimation(Node current, int delay) { // method adds nodes from solver path as frames in animation
@@ -50,11 +52,15 @@ public class Animations {
         }));
     }
 
-    public void playAnimation(Button button) {
+    public void playAnimation() {
         timeline.play(); // play animation
         timeline.setOnFinished(event -> {
-      	  button.setDisable(false);
+      	  
+      	  
       	  Main.back.setDisable(false);
+      	  Main.clearButton.setDisable(false);
+      	  
+      	  
         });
     }
 }

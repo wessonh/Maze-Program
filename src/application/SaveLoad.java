@@ -37,6 +37,7 @@ public class SaveLoad {
     }
 
     public static void save(Node[][] maze) {
+
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save Maze");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
@@ -54,6 +55,8 @@ public class SaveLoad {
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             int rows = Integer.parseInt(bufferedReader.readLine());
             int cols = Integer.parseInt(bufferedReader.readLine());
+Main.x = cols;
+            Main.y = rows;
             maze = new Node[rows][cols];
 
             for (int i = 0; i < rows; i++) {
@@ -100,4 +103,3 @@ public class SaveLoad {
         return null;
     }
 }
-

@@ -84,8 +84,12 @@ public class Node {
         return neighbors;
     }
 
-    // adds neighbors
-    public void addNeighbor(Node node) {
-        this.neighbors.add(node);
-    }
+//    public void setNeighbors(ArrayList<Node> neighbors) {
+//        this.neighbors = neighbors;
+//    }
+
+    // adds neighbors.
+   public void addNeighbor(Node node) {
+       this.neighbors.add(node);
+   }
 }

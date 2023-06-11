@@ -38,7 +38,7 @@ public class Solve {
             timeline.setOnFinished(e -> { // when maze generation animation is finished.
                 // new solve
                 search(maze);  // run the solution search
-                animate(button); // animate solution
+                animate(); // animate solution
             });
             timeline.play(); // starts animation
 
@@ -122,23 +122,26 @@ public class Solve {
             delay += 15; // delay for next node
         }
     }
+    
+    public void animateSolve(Node[][] maze, Group group, AtomicBoolean solverDone) {
+       
+       search(maze); // runs search method from solve
+       Timeline solveTimeline = animate(); // animates the maze solver
 
-    public void animateSolve(Node[][] maze, Group group, AtomicBoolean solverDone, Button solveButton) {
-
-        solveButton.setDisable(true);
-        search(maze); // runs search method from solve
-        Timeline solveTimeline = animate(solveButton); // animates the maze solver
-
-        solveTimeline.setOnFinished(e -> {
-            solverDone.set(true);
-        });
-        solveTimeline.play();
+solveTimeline.setOnFinished(e -> {
+           solverDone.set(true);
+           
+       });
+       solveTimeline.play();
     }
 
-    public Timeline animate(Button button){ // method for adding frame to animation with chosen delay, animates the breadth first search
+    public Timeline animate(){ // method for adding frame to animation with chosen delay, animates the breadth first search
+       Timeline timeline = new Timeline();
 
-        Timeline timeline = new Timeline();
-        animations.playAnimation(button); // adds animation frames to the timeline
-        return timeline;
-    }
+       // Add your animation frames to the timeline
+
+       animations.playAnimation();
+
+       return timeline;
+   }
 }
