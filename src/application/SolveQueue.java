@@ -1,5 +1,6 @@
 package application;
 
+
 public class SolveQueue<sq> { // Queue class that is used in Solve class
 
     private static class Node<sq> { // Node class
