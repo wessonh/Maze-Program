@@ -11,7 +11,7 @@ public class Node {
     private boolean end;// boolean to check for end of the maze
     private final int row; // nodes position on maze grid
     private final int col;
-    private final ArrayList<Node> neighbors = new ArrayList<>(); // list stores all the neighboring node
+    private ArrayList<Node> neighbors = new ArrayList<>(); // list stores all the neighboring node
     public Integer distance = 0;
     Node parent;
 
@@ -84,7 +84,11 @@ public class Node {
         return neighbors;
     }
 
-    // adds neighbors
+    public void setNeighbors(ArrayList<Node> neighbors) {
+        this.neighbors = neighbors;
+    }
+
+    // adds neighbors.
     public void addNeighbor(Node node) {
         this.neighbors.add(node);
     }
