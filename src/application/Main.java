@@ -31,7 +31,7 @@ public class Main extends Application {
     static Stage stage;
     //static Button button = new Button();
     public static Button back = new Button("Back");
-    int y, x;
+    static int y, x;
     private static final SaveLoad saveLoad = new SaveLoad(stage);
     static AtomicBoolean solverDone = new AtomicBoolean(false);
     static AtomicBoolean mazeGenerated = new AtomicBoolean(false);
@@ -58,9 +58,16 @@ public class Main extends Application {
             
 
             Button loadButton = new Button("Load Maze");
-            loadButton.setLayoutX(200);
-            loadButton.setLayoutY(400);
-            group.getChildren().add(loadButton);
+            loadButton.setLayoutX(300);
+            loadButton.setLayoutY(550);
+            
+            
+            Button loadButton2 = new Button("Load Maze");
+            loadButton2.setLayoutX(200);
+            loadButton2.setLayoutY(400);
+            group.getChildren().add(loadButton2);
+            
+            
             
             saveButton.setOnAction(e -> {
                SaveLoad.save(maze);
@@ -77,12 +84,12 @@ public class Main extends Application {
             TextField enterRows = new TextField();
             enterRows.setTranslateX(350);
             enterRows.setTranslateY(50);
-            group3.getChildren().add(enterRows);
+            
             
             TextField enterColumns = new TextField();
             enterColumns.setTranslateX(350);
             enterColumns.setTranslateY(100);
-            group3.getChildren().add(enterColumns);
+            
             
             
             clearButton.setTranslateX(225);
@@ -90,16 +97,14 @@ public class Main extends Application {
             
 	         
 	         Button next = new Button("Generate Maze");
-	 	  	   next.setTranslateX(400);
+	 	  	   next.setTranslateX(350);
 	         next.setTranslateY(550);
 	         
-	         group3.getChildren().add(next);
-	         	
 	         	
 	         Label row = new Label ("Enter the number of rows, 5 - 20, for maze:");
 	         row.setTranslateX(100);
 	         row.setTranslateY(50);
-	         group3.getChildren().add(row);
+	         
 	         
 	         Label exception = new Label ("Error: Input must be an integer between 5 and 20");
 	         exception.setTranslateX(300);
@@ -108,7 +113,7 @@ public class Main extends Application {
 	         Label columns = new Label ("Enter number of columns, 5 - 20, for maze:");
 	         columns.setTranslateX(100);
 	         columns.setTranslateY(100);
-	         group3.getChildren().add(columns);
+	         
 	         
 	         Button newCustom = new Button("New Custom Maze");
 	         newCustom.setTranslateX(250);
@@ -124,17 +129,24 @@ public class Main extends Application {
 	         
 	         next.setOnAction(value ->  {
 	         	try {
-		         	y = Integer.parseInt(enterColumns.getText());
-			         x = Integer.parseInt(enterRows.getText());
-		         	stage.setScene(scene2);
-	  	         	Gen generator = new Gen();
-	  	         	maze = Gen.animateGen(group2,x ,y);
-	  	         	group2.getChildren().add(newCustom);
-	  	      	   group2.getChildren().add(back);
-	  	      	   group2.getChildren().add(solveButton);
-	            	group2.getChildren().add(saveButton);
-	  	      	   enterRows.clear();
-	  	      	   enterColumns.clear();
+	         			group3.getChildren().remove(exception);
+		         		if((Integer.parseInt(enterColumns.getText()) >=5 && Integer.parseInt(enterColumns.getText()) <= 20) && (Integer.parseInt(enterRows.getText()) >= 5 && Integer.parseInt(enterRows.getText()) <= 20)) {
+		         			
+				         	y = Integer.parseInt(enterColumns.getText());
+					         x = Integer.parseInt(enterRows.getText());
+				         	stage.setScene(scene2);
+			  	         	Gen generator = new Gen();
+			  	         	maze = Gen.animateGen(group2,x ,y);
+			  	         	group2.getChildren().add(newCustom);
+			  	      	   group2.getChildren().add(back);
+			  	      	   group2.getChildren().add(solveButton);
+			            	group2.getChildren().add(saveButton);
+			  	      	   enterRows.clear();
+			  	      	   enterColumns.clear();
+		         		}
+		         		else {
+		         			group3.getChildren().add(exception);
+		         		}
 	         	}catch(Exception NumberFormatException) {
 		         	group3.getChildren().add(exception);
 		         }
@@ -176,6 +188,7 @@ public class Main extends Application {
   	       back.setOnAction(value ->  {
            	
            	   group2.getChildren().clear();
+           	   group3.getChildren().clear();
  	         	stage.setScene(scene);
            });
 	       
@@ -206,6 +219,12 @@ public class Main extends Application {
             custom.setTranslateY(350);
             
             custom.setOnAction(value ->  {
+            	group3.getChildren().add(back);
+            	group3.getChildren().add(enterRows);
+            	group3.getChildren().add(enterColumns);
+            	group3.getChildren().add(row);
+            	group3.getChildren().add(columns);
+            	group3.getChildren().add(next);
             	stage.setScene(scene3);
   	      	   
             });
@@ -245,7 +264,7 @@ public class Main extends Application {
   	      	   
             });
             
-            loadButton.setOnAction(e -> {
+            loadButton2.setOnAction(e -> {
             	
             	stage.setScene(scene2);
                Node[][] loadedMaze = SaveLoad.load();
@@ -254,12 +273,27 @@ public class Main extends Application {
                    gen.render(loadedMaze.length, loadedMaze[0].length, loadedMaze);
                    group2.getChildren().clear();
                    maze = Gen.animateGen(group2, x, y);
-
+               
                    // Add all necessary buttons back to group2 after rendering
-                   group2.getChildren().addAll(genButton, solveButton, saveButton, loadButton, clearButton);
-                   genButton.setDisable(false); // Enable gen Button
+                   group2.getChildren().addAll(solveButton, loadButton, back);
+       
+               }
+           });
+            
+           loadButton.setOnAction(e -> {
+            	
+            	stage.setScene(scene2);
+               Node[][] loadedMaze = SaveLoad.load();
+               if (loadedMaze != null) {
+                   maze = loadedMaze;
+                   gen.render(loadedMaze.length, loadedMaze[0].length, loadedMaze);
+                   group2.getChildren().clear();
+                   maze = Gen.animateGen(group2, x, y);
+               
+                   // Add all necessary buttons back to group2 after rendering
+                   group2.getChildren().addAll(solveButton, loadButton, back);
                    solveButton.setDisable(false);
-                   clearButton.setVisible(true);
+                   
 
                }
            });
@@ -276,12 +310,9 @@ public class Main extends Application {
             
             scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("application.css")).toExternalForm()); // adds the CSS style sheet
       	  	
-      	  		
-      	  
-            
-            
             stage.setScene(scene);
             stage.show(); // displays the window*/
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -290,8 +321,6 @@ public class Main extends Application {
     
     public static void main(String[] args) {
    	
-	   	 	       
-   	 
    	 launch(args);
    	 
     }

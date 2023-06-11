@@ -55,6 +55,8 @@ public class SaveLoad {
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             int rows = Integer.parseInt(bufferedReader.readLine());
             int cols = Integer.parseInt(bufferedReader.readLine());
+            Main.x = cols;
+            Main.y = rows;
             maze = new Node[rows][cols];
 
             for (int i = 0; i < rows; i++) {

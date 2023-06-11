@@ -158,7 +158,7 @@ public class Gen {
     }
 
     static Node[][] animateGen(Group group, int x, int y) {
-        Node[][] maze = create(15, 15);
+        Node[][] maze = create(x, y);
         Timeline timeline = new Timeline();
         int delay = 0;
 
