@@ -11,6 +11,7 @@ public class Animations {
 
     private final Timeline timeline;
 
+
     public Animations() {
 
         this.timeline = new Timeline(); // new Timeline
@@ -41,8 +42,10 @@ public class Animations {
         timeline.getKeyFrames().add(new KeyFrame(Duration.millis(delay), e -> { // adds nodes from solver as frames
             // marks visited with *
             Text text = new Text(current.getCol() * 25 + 37.5, current.getRow() * 25 + 37.5, "*");
-            // for nodes in group, add * to display
+            //sets * color to green from css style sheet
 
+            text.getStyleClass().add("solve-character");
+            // for nodes in group, add * to display
             Main.group2.getChildren().add(text); // for nodes in group, add * to display
         }));
     }
