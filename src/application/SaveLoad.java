@@ -37,6 +37,7 @@ public class SaveLoad {
     }
 
     public static void save(Node[][] maze) {
+   	 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save Maze");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
@@ -100,4 +101,5 @@ public class SaveLoad {
         return null;
     }
 }
+
 
