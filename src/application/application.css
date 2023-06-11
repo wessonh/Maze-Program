@@ -1,49 +1,23 @@
-/* Outer walls */
-.maze-line-up {
-    -fx-stroke: blue;
-    -fx-stroke-width: 2;
+/* solve character */
+
+.solve-character {
+    -fx-fill: green;
 }
 
+/* Outer walls */
+.maze-line-up,
+.maze-line-down,
+.maze-line-left,
 .maze-line-right {
     -fx-stroke: blue;
-    -fx-stroke-width: 2;
-}
-
-.maze-line-down {
-    -fx-stroke: blue;
-    -fx-stroke-width: 2;
-}
-
-.maze-line-left {
-    -fx-stroke: blue;
-    -fx-stroke-width: 2;
+    -fx-stroke-width: 2.5;
 }
 
 /* Inner walls */
-.maze-line-up.animating {
+.maze-line-up-animating,
+.maze-line-right-animating,
+.maze-line-down-animating,
+.maze-line-left-animating {
     -fx-stroke: red;
     -fx-stroke-width: 2;
-    -fx-opacity: 0;
-    -fx-transition: opacity 0.3s;
-}
-
-.maze-line-right.animating {
-    -fx-stroke: red;
-    -fx-stroke-width: 2;
-    -fx-opacity: 0;
-    -fx-transition: opacity 0.3s;
-}
-
-.maze-line-down.animating {
-    -fx-stroke: red;
-    -fx-stroke-width: 2;
-    -fx-opacity: 0;
-    -fx-transition: opacity 0.3s;
-}
-
-.maze-line-left.animating {
-    -fx-stroke: red;
-    -fx-stroke-width: 2;
-    -fx-opacity: 0;
-    -fx-transition: opacity 0.3s;
 }

@@ -1,9 +1,8 @@
 package application;
 import java.util.ArrayList;
-import java.util.*;
 
 public class Node {
-    
+
     private boolean up = true; //booleans for the walls around nodes
     private boolean down = true;
     private boolean right = true;
@@ -14,9 +13,7 @@ public class Node {
     private final int col;
     private final ArrayList<Node> neighbors = new ArrayList<>(); // list stores all the neighboring node
     public Integer distance = 0;
-    
     Node parent;
-	 
 
     // constructor for Node
     public Node(int row, int col) {
@@ -24,10 +21,7 @@ public class Node {
         this.col = col;
         this.row = row;
         this.end = false;
-        
     }
-    
-    
 
     // getters and setters for the class variables
     public boolean isUp() {
@@ -82,17 +76,9 @@ public class Node {
         return row;
     }
 
-//    public void setRow(int row) {
-//        this.row = row;
-//    }
-
     public int getCol() {
         return col;
     }
-
-//    public void setCol(int col) {
-//       this.col = col;
-//    }
 
     public ArrayList<Node> getNeighbors() {
         return neighbors;
