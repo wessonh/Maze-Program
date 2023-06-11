@@ -122,26 +122,26 @@ public class Solve {
             delay += 15; // delay for next node
         }
     }
-    
-    public void animateSolve(Node[][] maze, Group group, AtomicBoolean solverDone) {
-       
-       search(maze); // runs search method from solve
-       Timeline solveTimeline = animate(); // animates the maze solver
 
-solveTimeline.setOnFinished(e -> {
-           solverDone.set(true);
-           
-       });
-       solveTimeline.play();
+    public void animateSolve(Node[][] maze, Group group, AtomicBoolean solverDone) {
+
+        search(maze); // runs search method from solve
+        Timeline solveTimeline = animate(); // animates the maze solver
+
+        solveTimeline.setOnFinished(e -> {
+            solverDone.set(true);
+
+        });
+        solveTimeline.play();
     }
 
     public Timeline animate(){ // method for adding frame to animation with chosen delay, animates the breadth first search
-       Timeline timeline = new Timeline();
+        Timeline timeline = new Timeline();
 
-       // Add your animation frames to the timeline
+        // Add your animation frames to the timeline
 
-       animations.playAnimation();
+        animations.playAnimation();
 
-       return timeline;
-   }
+        return timeline;
+    }
 }
