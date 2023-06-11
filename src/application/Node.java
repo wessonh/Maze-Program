@@ -89,7 +89,7 @@ public class Node {
 //    }
 
     // adds neighbors.
-   public void addNeighbor(Node node) {
-       this.neighbors.add(node);
-   }
+    public void addNeighbor(Node node) {
+        this.neighbors.add(node);
+    }
 }
