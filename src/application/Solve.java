@@ -1,51 +1,17 @@
 package application;
-import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.Group;
-import javafx.scene.control.Button;
-import javafx.scene.shape.Line;
-import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Solve {
 
-    private Animations animations = new Animations();
+    private final Animations animations = new Animations();
     private int delay;
 
     public Solve() {
 
         // makes new animation object
         this.delay = 0; // sets delay to O
-    }
-
-    public void start(Group group, Node[][]maze, Button button) {
-
-        try {
-
-            Timeline timeline = new Timeline();// creates new timeline
-            int delay = 0; // line visibility delay set to zero
-
-
-            for (javafx.scene.Node node : group.getChildren()) { // for loop iterates through every node in group
-
-                if (node instanceof Line line) { // if the current node is an instanceof line
-                    // adds new frame to timeLine
-                    timeline.getKeyFrames().add(new KeyFrame(Duration.millis(delay), e -> line.setVisible(true)));
-                    delay += 5; // sets the delay to 5 or whatever value.
-                }
-            }
-            timeline.setOnFinished(e -> { // when maze generation animation is finished.
-                // new solve
-                search(maze);  // run the solution search
-                animate(button); // animate solution
-            });
-            timeline.play(); // starts animation
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     //private void evaluate(Node neighbor, Node source)
@@ -60,22 +26,7 @@ public class Solve {
                 nodes[j].distance = -1;
             }
         }
-        /*
-        Queue <Node> unsettled = new PriorityQueue<>();
-        unsettled.add(maze[0][0]);
 
-        while(!unsettled.isEmpty()) {
-
-      	  Node current = unsettled.poll();
-      	  for(Node neighbor : current.getNeighbors()) {
-      		  if(!neighbor.settled) {
-      			  evaluate(neighbor);
-      			  unsettled.add(neighbor);
-      		  }
-
-      	  }
-      	  current.settled = true;
-        }*/
         SolveQueue<Node> list = new SolveQueue<>(); // initializes queue and add the start node
         maze[0][0].setVisited(true);
         list.enqueue(maze[0][0]);
@@ -138,23 +89,24 @@ public class Solve {
         }
     }
 
-    public void animateSolve(Node[][] maze, Group group, AtomicBoolean solverDone, Button solveButton) {
-        solveButton.setDisable(true);
+    public void animateSolve(Node[][] maze, AtomicBoolean solverDone) {
+
         search(maze); // runs search method from solve
-        Timeline solveTimeline = animate(solveButton); // animates the maze solver
+        Timeline solveTimeline = animate(); // animates the maze solver
 
         solveTimeline.setOnFinished(e -> {
             solverDone.set(true);
+
         });
         solveTimeline.play();
     }
 
-    public Timeline animate(Button button){ // method for adding frame to animation with chosen delay, animates the breadth first search
+    public Timeline animate(){ // method for adding frame to animation with chosen delay, animates the breadth first search
         Timeline timeline = new Timeline();
 
         // Add your animation frames to the timeline
 
-        animations.playAnimation(button);
+        animations.playAnimation();
 
         return timeline;
     }
