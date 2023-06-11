@@ -1,144 +1,118 @@
 package application;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.scene.Group;
-import javafx.scene.control.Button;
-import javafx.scene.shape.Line;
-import javafx.util.Duration;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Solve {
+public class SaveLoad {
 
-    private Animations animations = new Animations();
-    private int delay;
+    private static Stage stage;
 
-    public Solve() {
-
-        // makes new animation object
-        this.delay = 0; // sets delay to O
+    public SaveLoad(Stage stage) {
+        SaveLoad.stage = stage;
     }
 
-    public void start(Group group, Node[][]maze, Button button) {
-
+    public static void saveFile(Node[][] maze, String fileName) {
         try {
+            FileWriter fileWriter = new FileWriter(fileName);
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+            int rows = maze.length;
+            int cols = maze[0].length;
+            printWriter.println(rows);
+            printWriter.println(cols);
 
-            Timeline timeline = new Timeline();// creates new timeline
-            int delay = 0; // line visibility delay set to zero
-
-
-            for (javafx.scene.Node node : group.getChildren()) { // for loop iterates through every node in group
-
-                if (node instanceof Line line) { // if the current node is an instanceof line
-                    // adds new frame to timeLine
-                    timeline.getKeyFrames().add(new KeyFrame(Duration.millis(delay), e -> line.setVisible(true)));
-                    delay += 5; // sets the delay to 5 or whatever value.
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < cols; j++) {
+                    Node node = maze[i][j];
+                    printWriter.println(node.getRow() + "," + node.getCol() + "," +
+                            node.isUp() + "," + node.isDown() + "," +
+                            node.isLeft() + "," + node.isRight() + "," +
+                            node.isVisited() + "," + node.isEnd());
                 }
             }
-            timeline.setOnFinished(e -> { // when maze generation animation is finished.
-                // new solve
-                search(maze);  // run the solution search
-                animate(button); // animate solution
-            });
-            timeline.play(); // starts animation
-
-
-        } catch (Exception e) {
+            printWriter.close();
+            System.out.println("Maze has been saved!: " + fileName);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    //private void evaluate(Node neighbor, Node source)
-    public void search(Node[][] maze) {
+    public static void save(Node[][] maze) {
 
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Maze");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+        File mazeFile = fileChooser.showSaveDialog(stage);
 
-        for (Node[] nodes : maze) { // enhanced for loop, sets all nodes in maze array to unvisited
-
-            for (int j = 0; j < maze[0].length; j++) {
-
-                nodes[j].setVisited(false); // set all nodes as unvisited
-                nodes[j].distance = -1;
-            }
+        if(mazeFile != null) {
+            saveFile(maze, mazeFile.getAbsolutePath());
         }
+    }
 
-        SolveQueue<Node> list = new SolveQueue<>(); // initializes queue and add the start node
-        maze[0][0].setVisited(true);
-        list.enqueue(maze[0][0]);
+    public static Node[][] loadFile(String fileName) {
+        Node[][] maze = null;
+        try {
+            FileReader fileReader = new FileReader(fileName);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            int rows = Integer.parseInt(bufferedReader.readLine());
+            int cols = Integer.parseInt(bufferedReader.readLine());
+            Main.x = cols;
+            Main.y = rows;
+            maze = new Node[rows][cols];
 
-        Node end = null;
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < cols; j++) {
+                    String[] data = bufferedReader.readLine().split(",");
+                    int row = Integer.parseInt(data[0]);
+                    int col = Integer.parseInt(data[1]);
+                    boolean up = Boolean.parseBoolean(data[2]);
+                    boolean down = Boolean.parseBoolean(data[3]);
+                    boolean left = Boolean.parseBoolean(data[4]);
+                    boolean right = Boolean.parseBoolean(data[5]);
+                    boolean visited = Boolean.parseBoolean(data[6]);
+                    boolean end = Boolean.parseBoolean(data[7]);
 
-        while(!list.isEmpty()) { // while loop for Breadth First Search
+                    Node node = new Node(row, col);
+                    node.setUp(up);
+                    node.setDown(down);
+                    node.setLeft(left);
+                    node.setRight(right);
+                    node.setVisited(visited);
+                    node.setEnd(end);
 
-            Node current = list.dequeue(); // polls node from the queue
-
-            if(current.isEnd()) { // if reached end, end loop
-                end = current;
-                break;
-            }
-            else {
-                for(Node neighbor : current.getNeighbors()) {
-                    if(neighbor.isVisited()) {  // check if the neighbor is unvisited
-                        // If neighbor is above current node and no walls are blocking way, visit and add to queue
-                        if(neighbor.getRow() < current.getRow() && !neighbor.isDown() && !current.isUp()) {
-                            neighbor.setVisited(true);
-                            list.enqueue(neighbor);
-                            neighbor.distance = current.distance + 1;
-                            neighbor.parent = current;
-                        }
-                        // If neighbor is below current node and no walls are blocking way, visit and add to queue
-                        else if(neighbor.getRow() > current.getRow() && !neighbor.isUp() && !current.isDown()) {
-                            neighbor.setVisited(true);
-                            list.enqueue(neighbor);
-                            neighbor.distance = current.distance + 1;
-                            neighbor.parent = current;
-                        }
-                        // If neighbor is left of current node and no walls are blocking way, visit and add to queue
-                        else if(neighbor.getCol() < current.getCol() && !neighbor.isRight() && !current.isLeft()) {
-                            neighbor.setVisited(true);
-                            list.enqueue(neighbor);
-                            neighbor.distance = current.distance + 1;
-                            neighbor.parent = current;
-                        }
-                        // If neighbor is right of current node and no walls are blocking way, visit and add to queue
-                        else if(neighbor.getCol() > current.getCol() && !neighbor.isLeft() && !current.isRight()) {
-                            neighbor.setVisited(true);
-                            list.enqueue(neighbor);
-                            neighbor.distance = current.distance + 1;
-                            neighbor.parent = current;
-                        }
-                    }
+                    maze[i][j] = node;
                 }
             }
-        }
-        Node temp = end;
-        ArrayList<Node> path = new ArrayList<>();
-        while (temp != null){
-            path.add(temp);
-            temp = temp.parent;
-        }
 
-        for(int i = path.size()-1; i >=0; i-- ) {
-            animations.addToAnimation(path.get(i), delay); // add frame for the current node to addToAnimation timeline
-            delay += 15; // delay for next node
+            // After loading all nodes, reconstruct the neighbors list
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < cols; j++) {
+                    ArrayList<Node> neighbors = new ArrayList<>();
+                    if(i > 0) neighbors.add(maze[i-1][j]); // Up
+                    if(j > 0) neighbors.add(maze[i][j-1]); // Left
+                    if(i < rows - 1) neighbors.add(maze[i+1][j]); // Down
+                    if(j < cols - 1) neighbors.add(maze[i][j+1]); // Right
+                    maze[i][j].setNeighbors(neighbors);
+                }
+            }
+            bufferedReader.close();
+            System.out.println("Maze loaded successfully: " + fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return maze;
     }
 
-    public void animateSolve(Node[][] maze, Group group, AtomicBoolean solverDone, Button solveButton) {
+    public static Node[][] load() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Load Maze");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
 
-        solveButton.setDisable(true);
-        search(maze); // runs search method from solve
-        Timeline solveTimeline = animate(solveButton); // animates the maze solver
+        File file = fileChooser.showOpenDialog(stage);
 
-        solveTimeline.setOnFinished(e -> {
-            solverDone.set(true);
-        });
-        solveTimeline.play();
-    }
-
-    public Timeline animate(Button button){ // method for adding frame to animation with chosen delay, animates the breadth first search
-
-        Timeline timeline = new Timeline();
-        animations.playAnimation(button); // adds animation frames to the timeline
-        return timeline;
+        if (file != null) {
+            return loadFile(file.getAbsolutePath());
+        }
+        return null;
     }
 }
