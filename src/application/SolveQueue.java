@@ -3,12 +3,12 @@ package application;
 public class SolveQueue<sq> { // Queue class that is used in Solve class
 
     private static class Node<sq> { // Node class
-      
+
         private final sq data;
         private Node<sq> next;
 
         public Node(sq data) {
-          
+
             this.data = data; // data for this node
             this.next = null; // next node in queue
         }
@@ -18,7 +18,7 @@ public class SolveQueue<sq> { // Queue class that is used in Solve class
     private Node<sq> back; // back of queue
 
     public SolveQueue() {
-        
+
         this.front = this.back = null; //sets front and back to null when queue is created
     }
 
