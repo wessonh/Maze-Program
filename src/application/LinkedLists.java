@@ -1,5 +1,7 @@
 package application;
 
+
+// This class adds a functional linked list without using the library. This is used in the stack class.
 public class LinkedLists <Any> {
 
     private static class Node <Any>{
@@ -40,10 +42,9 @@ public class LinkedLists <Any> {
 
         return size() == 0;
     }
-    public boolean add(Any x) {
+    public void add(Any x) {
 
         add(size(),x);
-        return true;
     }
     public void add(int idx, Any x) {
 
@@ -60,9 +61,9 @@ public class LinkedLists <Any> {
         p.data = newVal;
         return oldVal;
     }
-    public Any remove(int idx) {
+    public void remove(int idx) {
 
-        return remove(getNode(idx));
+        remove(getNode(idx));
 
     }
     private void addBefore(Node <Any> p, Any x) {
@@ -73,14 +74,13 @@ public class LinkedLists <Any> {
         theSize++;
         modCount++;
     }
-    private Any remove(Node <Any> p) {
+    private void remove(Node <Any> p) {
 
         p.next.prev = p.prev;
         p.prev.next = p.next;
         theSize--;
         modCount++;
 
-        return p.data;
     }
     private Node <Any> getNode(int idx) {
 
