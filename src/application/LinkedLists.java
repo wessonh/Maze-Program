@@ -1,4 +1,3 @@
-
 package application;
 
 public class LinkedLists <Any> {
@@ -109,35 +108,6 @@ public class LinkedLists <Any> {
         }
         return p;
     }
-
-	/*public java.util.Iterator <Integer>iterator(){
-		return new LinkedListIterator();
-	}
-	private class LinkedListIterator implements java.util.Iterator<Integer>{
-
-		private Node current = begin.next;
-		private int expectedMod = modCount;
-
-
-		public boolean hasNext() {
-			return current != end;
-		}
-
-		public Integer next() {
-
-			if(modCount != expectedMod) {
-				throw new java.util.ConcurrentModificationException();
-			}
-			if(!hasNext()) {
-				throw new java.util.NoSuchElementException();
-			}
-			int nextItem = current.data;
-			current = current.next;
-			return nextItem;
-		}
-
-
-	}*/
 
     private int theSize;
     private int modCount = 0;
