@@ -1,12 +1,13 @@
 package application;
-import javafx.stage.FileChooser;
+import javafx.stage.FileChooser; 
 import javafx.stage.Stage;
 import java.io.*;
+import java.util.ArrayList; 
 
 public class SaveLoad {
 
     private static Stage stage;
-
+    
     public SaveLoad(Stage stage) {
         this.stage = stage;
     }
@@ -48,56 +49,70 @@ public class SaveLoad {
         }
     }
 
-    public static Node[][] loadFile(String fileName, int rows, int cols, BufferedReader bufferedReader, FileReader fileReader) {
-        Node[][] maze = null;
-        try {
-            
-            
-            maze = new Node[rows][cols];
+    public static Node[][] loadFile(String fileName) {
+       Node[][] maze = null;
+       try {
+           FileReader fileReader = new FileReader(fileName);
+           BufferedReader bufferedReader = new BufferedReader(fileReader);
+           int rows = Integer.parseInt(bufferedReader.readLine());
+           int cols = Integer.parseInt(bufferedReader.readLine());
+           maze = new Node[rows][cols];
 
-            for (int i = 0; i < rows; i++) {
-                for (int j = 0; j < cols; j++) {
-                    String[] data = bufferedReader.readLine().split(",");
-                    int row = Integer.parseInt(data[0]);
-                    int col = Integer.parseInt(data[1]);
-                    boolean up = Boolean.parseBoolean(data[2]);
-                    boolean down = Boolean.parseBoolean(data[3]);
-                    boolean left = Boolean.parseBoolean(data[4]);
-                    boolean right = Boolean.parseBoolean(data[5]);
-                    boolean visited = Boolean.parseBoolean(data[6]);
-                    boolean end = Boolean.parseBoolean(data[7]);
+           for (int i = 0; i < rows; i++) {
+               for (int j = 0; j < cols; j++) {
+                   String[] data = bufferedReader.readLine().split(",");
+                   int row = Integer.parseInt(data[0]);
+                   int col = Integer.parseInt(data[1]);
+                   boolean up = Boolean.parseBoolean(data[2]);
+                   boolean down = Boolean.parseBoolean(data[3]);
+                   boolean left = Boolean.parseBoolean(data[4]);
+                   boolean right = Boolean.parseBoolean(data[5]);
+                   boolean visited = Boolean.parseBoolean(data[6]);
+                   boolean end = Boolean.parseBoolean(data[7]);
 
-                    Node node = new Node(row, col);
-                    node.setUp(up);
-                    node.setDown(down);
-                    node.setLeft(left);
-                    node.setRight(right);
-                    node.setVisited(visited);
-                    node.setEnd(end);
+                   Node node = new Node(row, col);
+                   node.setUp(up);
+                   node.setDown(down);
+                   node.setLeft(left);
+                   node.setRight(right);
+                   node.setVisited(visited);
+                   node.setEnd(end);
 
-                    maze[i][j] = node;
-                }
-            }
-            bufferedReader.close();
-            System.out.println("Maze loaded successfully: " + fileName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return maze;
+                   maze[i][j] = node;
+               }
+           }
+
+           // After loading all nodes, reconstruct the neighbors list
+           for (int i = 0; i < rows; i++) {
+               for (int j = 0; j < cols; j++) {
+                   ArrayList<Node> neighbors = new ArrayList<>();
+                   if(i > 0) neighbors.add(maze[i-1][j]); // Up
+                   if(j > 0) neighbors.add(maze[i][j-1]); // Left
+                   if(i < rows - 1) neighbors.add(maze[i+1][j]); // Down
+                   if(j < cols - 1) neighbors.add(maze[i][j+1]); // Right
+                   maze[i][j].setNeighbors(neighbors);
+               }
+           }
+           bufferedReader.close();
+           System.out.println("Maze loaded successfully: " + fileName);
+       } catch (IOException e) {
+           e.printStackTrace();
+       }
+       return maze;
+   }
+
+    public static Node[][] load() {
+       FileChooser fileChooser = new FileChooser();
+       fileChooser.setTitle("Load Maze");
+       fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+
+       File file = fileChooser.showOpenDialog(stage);
+
+       if (file != null) {
+           return loadFile(file.getAbsolutePath());
+       }
+       return null;
+   }
     }
-
-    public static String load() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Load Maze");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
-
-        File file = fileChooser.showOpenDialog(stage);
-
-        if (file != null) {
-            return file.getAbsolutePath();
-        }
-        return null;
-    }
-}
 
 

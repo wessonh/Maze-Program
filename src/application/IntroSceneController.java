@@ -34,6 +34,11 @@ public class IntroSceneController {
          loadButton2.setLayoutX(200);
          loadButton2.setLayoutY(400);
          group.getChildren().add(loadButton2);
+         loadButton2.setOnAction(value ->  {
+         	
+   	  		drawScene.loadButtonAction();
+   
+         });
          
          Button ranButton = new Button("Random Maze");
    	  	ranButton.setTranslateX(200);

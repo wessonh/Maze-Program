@@ -187,4 +187,22 @@ public class Gen {
 
         print(row, col, maze, group); // Calls the print method to print the maze.
     }
+    
+    public static void animateLoadedMaze(Group group, Node[][] maze, int row, int col) {
+       print(row, col, maze, group); // Calls the print method to print the maze.
+
+       Timeline timeline = new Timeline();
+       int delay = 0;
+
+       for (javafx.scene.Node node : group.getChildren()) {
+           if (node instanceof Line line) {
+               timeline.getKeyFrames().add(new KeyFrame(Duration.millis(delay), e -> line.setVisible(true)));
+               delay += 5;
+           }
+       }
+       timeline.play();
+       timeline.setOnFinished(event -> {
+
+       });
+   }
 }

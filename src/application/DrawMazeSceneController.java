@@ -27,6 +27,7 @@ public class DrawMazeSceneController {
 	private Button back = new Button("Back");
 	private Button genButton = new Button("Generate Maze");
 	private Button clearButton = new Button("Clear Maze");
+	private Button loadButton = new Button("Load Maze");
 	
 	public DrawMazeSceneController(Stage stage) {
 	
@@ -47,7 +48,7 @@ public class DrawMazeSceneController {
 		   AtomicBoolean solverDone = new AtomicBoolean(false);
 			
          
-		   Button loadButton = new Button("Load Maze");
+		   
          loadButton.setLayoutX(300);
          loadButton.setLayoutY(550);
          
@@ -68,7 +69,7 @@ public class DrawMazeSceneController {
 		  	Button saveButton = new Button("Save Maze");
 		  	saveButton.setLayoutX(400);
          saveButton.setLayoutY(550);
-		   group.getChildren().add(saveButton);
+		   
 		   
 		   saveButton.setOnAction(e -> {
             SaveLoad.save(maze);
@@ -134,38 +135,17 @@ public class DrawMazeSceneController {
 	    });
 		 
 		 loadButton.setOnAction(e -> {
-       	 
-			 int x = 0;
-          int y = 0;
-       	 stage.setScene(scene);
-       	 String file = SaveLoad.load();
-       	 FileReader fileReader;
-       	Node[][] loadedMaze = null;
-			try {
-				fileReader = new FileReader(file);
-				BufferedReader bufferedReader = new BufferedReader(fileReader);
-	          int rows = Integer.parseInt(bufferedReader.readLine());
-	          int cols = Integer.parseInt(bufferedReader.readLine());
-	          x = cols;
-	          y = rows;
-	           loadedMaze = SaveLoad.loadFile(file, x, y, bufferedReader, fileReader);
-			} catch (IOException e1) {
-            e1.printStackTrace();
-        }
-          
-           
-          
+			 stage.setScene(scene);
+			 group.getChildren().clear();
+          Node[][] loadedMaze = SaveLoad.load();
           if (loadedMaze != null) {
               maze = loadedMaze;
+              // animates the loaded maze
               Gen gen = new Gen();
-              gen.render(loadedMaze.length, loadedMaze[0].length, loadedMaze, group);
-              group.getChildren().clear();
-              maze = gen.animateGen(group, x, y);
-          
-              // Add all necessary buttons back to group2 after rendering
+              gen.animateLoadedMaze(group, maze, maze.length, maze[0].length); // add this line
+
+              // add all buttons back to group2 after displaying maze
               group.getChildren().addAll(solveButton, loadButton, back);
-              solveButton.setDisable(false);
-              
 
           }
       });
@@ -204,8 +184,24 @@ public class DrawMazeSceneController {
    	group.getChildren().add(clearButton);
    	stage.setScene(scene);
    	group.getChildren().add(genButton);
+   	group.getChildren().add(genButton);
    	Gen generator = new Gen();
 	   maze = Gen.animateGen(group, x, y);
 	   
+	}
+	
+	public void loadButtonAction() {
+		stage.setScene(scene);
+      Node[][] loadedMaze = SaveLoad.load();
+      if (loadedMaze != null) {
+          maze = loadedMaze;
+          // animates the loaded maze
+          Gen gen = new Gen();
+          gen.animateLoadedMaze(group, maze, maze.length, maze[0].length); // add this line
+          group.getChildren().add(loadButton);
+          // add all buttons back to group2 after displaying maze
+         
+
+      }
 	}
 }
