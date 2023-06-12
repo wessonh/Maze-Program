@@ -11,7 +11,7 @@ import javafx.scene.control.Button;
 import static application.Animations.animateLines;
 
 public class Gen {
-    public static Node[][] create(int row, int col, Group group) {
+    public Node[][] create(int row, int col, Group group) {
 
         Node[][] maze = new Node[row][col];// initializes maze array with number of row and col
 
@@ -46,7 +46,7 @@ public class Gen {
         print(row, col, maze, group); // Calls the print method to print the generated maze.
         return maze;
     }
-    private static void generateMaze(int row, int col, Node[][] maze) {
+    private void generateMaze(int row, int col, Node[][] maze) {
         // makes stack to keep track of visited nodes
         Stack<Node> stack = new Stack<>();
         // START NODE. sets the start node as top left. we might want to let the user able to adjust this
@@ -101,7 +101,7 @@ public class Gen {
         end.setDown(false);
         end.setEnd(true);
     }
-    private static void print(int row, int col, Node[][] maze, Group group) {
+    private  void print(int row, int col, Node[][] maze, Group group) {
 
         List<Line> visibleLines = new ArrayList<>();// Create list for visible lines and all visited nodes
 
@@ -158,7 +158,7 @@ public class Gen {
         animateLines(visibleLines); // animates the visible lines
     }
 
-    static Node[][] animateGen(Group group, int x, int y) {
+    public Node[][] animateGen(Group group, int x, int y) {
         Node[][] maze = create(x, y, group);
         Timeline timeline = new Timeline();
         int delay = 0;
@@ -188,7 +188,7 @@ public class Gen {
         print(row, col, maze, group); // Calls the print method to print the maze.
     }
     
-    public static void animateLoadedMaze(Group group, Node[][] maze, int row, int col) {
+    public  void animateLoadedMaze(Group group, Node[][] maze, int row, int col) {
        print(row, col, maze, group); // Calls the print method to print the maze.
 
        Timeline timeline = new Timeline();

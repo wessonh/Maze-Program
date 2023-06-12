@@ -1,16 +1,10 @@
 package application;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Objects;
+
 
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -28,9 +22,11 @@ public class DrawMazeSceneController {
 	private Button genButton = new Button("Generate Maze");
 	private Button clearButton = new Button("Clear Maze");
 	private Button loadButton = new Button("Load Maze");
+	private SaveLoad saveLoadMethod = new SaveLoad(stage);
+	private Button saveButton = new Button("Save Maze");
+	private Gen generator = new Gen();
 	
 	public DrawMazeSceneController(Stage stage) {
-	
 		
 		this.stage = stage;
 		scene = new Scene(group, 600, 600); 
@@ -46,7 +42,7 @@ public class DrawMazeSceneController {
 		try {
 	  	   
 		   AtomicBoolean solverDone = new AtomicBoolean(false);
-			
+		   
          
 		   
          loadButton.setLayoutX(300);
@@ -64,21 +60,22 @@ public class DrawMazeSceneController {
 		  	
 		  	solveButton.setTranslateX(135);
          solveButton.setTranslateY(550);
-		  	group.getChildren().add(solveButton);
+		  	//group.getChildren().add(solveButton);
 		  	
-		  	Button saveButton = new Button("Save Maze");
+		  	
 		  	saveButton.setLayoutX(400);
          saveButton.setLayoutY(550);
 		   
 		   
 		   saveButton.setOnAction(e -> {
-            SaveLoad.save(maze);
+		   	
+            saveLoadMethod.save(maze);
          });
 		   
 		   
       	back.setTranslateX(500);
          back.setTranslateY(550);
-		  	group.getChildren().add(back);
+		  	//group.getChildren().add(back);
 		  	
 		  	back.setOnAction(value ->  {
         	   group.getChildren().clear();
@@ -103,32 +100,30 @@ public class DrawMazeSceneController {
 		  	
 		  	genButton.setOnAction(value ->  {
           	
+		  		
 	         int y = (int)Math.floor(Math.random() * (20 - 5 + 1) + 5);
 	         int x = (int)Math.floor(Math.random() * (20 - 5 + 1) + 5);
 	         	
-	         group.getChildren().add(clearButton);
-	         clearButton.setDisable(true);
-         	Gen generator = new Gen();
-         	genButton.setDisable(true);
-      	   solveButton.setDisable(true);
-      	   back.setDisable(true);
-      	   saveButton.setDisable(true);
-  
-      	   maze = Gen.animateGen(group,x ,y);
+	         //group.getChildren().addAll(clearButton, back, genButton, solveButton, saveButton);
+	         //clearButton.setDisable(true);
+         	
+         	//genButton.setDisable(true);
+      	   //solveButton.setDisable(true);
+      	   //back.setDisable(true);
+      	   //saveButton.setDisable(true);
+	        
+      	   maze = generator.animateGen(group,x ,y);
       	   
        });
 	 	  	
 		
 		 clearButton.setOnAction(value ->  {
 		     	 group.getChildren().clear();
-		     	 group.getChildren().add(genButton);
-		     	 group.getChildren().add(back);
-		     	 group.getChildren().add(saveButton);
-		     	 group.getChildren().add(solveButton);
-		     	 saveButton.setDisable(false);
-		     	 genButton.setDisable(false);
-		     	 solveButton.setDisable(true);
-		     	 saveButton.setDisable(true);
+		     	 group.getChildren().addAll(genButton, back, saveButton, solveButton, clearButton);
+		     	 //saveButton.setDisable(false);
+		     	 //genButton.setDisable(false);
+		     	 //solveButton.setDisable(true);
+		     	 //saveButton.setDisable(true);
 		     	 
 		     	 
 		     	 
@@ -137,12 +132,12 @@ public class DrawMazeSceneController {
 		 loadButton.setOnAction(e -> {
 			 stage.setScene(scene);
 			 group.getChildren().clear();
-          Node[][] loadedMaze = SaveLoad.load();
+          Node[][] loadedMaze = saveLoadMethod.load();
           if (loadedMaze != null) {
               maze = loadedMaze;
               // animates the loaded maze
-              Gen gen = new Gen();
-              gen.animateLoadedMaze(group, maze, maze.length, maze[0].length); // add this line
+              
+              generator.animateLoadedMaze(group, maze, maze.length, maze[0].length); // add this line
 
               // add all buttons back to group2 after displaying maze
               group.getChildren().addAll(solveButton, loadButton, back);
@@ -164,10 +159,10 @@ public class DrawMazeSceneController {
 	
 	public void nextButtonAction(Button next, int x, int y) {
 		
+		group.getChildren().clear();
 		stage.setScene(scene);
-		group.getChildren().add(newCustom);
-	  	Gen generator = new Gen();
-	 	maze = Gen.animateGen(group,x ,y);
+		group.getChildren().addAll(newCustom, back, solveButton, saveButton);
+	 	maze = generator.animateGen(group,x ,y);
 	  	
 	}
 	
@@ -178,27 +173,27 @@ public class DrawMazeSceneController {
 	}
 	
 	public void ranButtonAction() {
-	
+		
+		group.getChildren().clear();
 		int y = (int)Math.floor(Math.random() * (20 - 5 + 1) + 5);
    	int x = (int)Math.floor(Math.random() * (20 - 5 + 1) + 5);
-   	group.getChildren().add(clearButton);
+
+   	group.getChildren().addAll(clearButton, back, genButton, solveButton, saveButton);
    	stage.setScene(scene);
-   	group.getChildren().add(genButton);
-   	group.getChildren().add(genButton);
-   	Gen generator = new Gen();
-	   maze = Gen.animateGen(group, x, y);
+	   maze = generator.animateGen(group, x, y);
 	   
 	}
 	
 	public void loadButtonAction() {
+		
+		group.getChildren().clear();
 		stage.setScene(scene);
-      Node[][] loadedMaze = SaveLoad.load();
+      Node[][] loadedMaze = saveLoadMethod.load();
       if (loadedMaze != null) {
           maze = loadedMaze;
-          // animates the loaded maze
-          Gen gen = new Gen();
-          gen.animateLoadedMaze(group, maze, maze.length, maze[0].length); // add this line
-          group.getChildren().add(loadButton);
+          // animates the loaded mGen gen = new Gen();
+          generator.animateLoadedMaze(group, maze, maze.length, maze[0].length); // add this line
+          group.getChildren().addAll(loadButton, solveButton, back);
           // add all buttons back to group2 after displaying maze
          
 

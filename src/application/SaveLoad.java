@@ -6,13 +6,13 @@ import java.util.ArrayList;
 
 public class SaveLoad {
 
-    private static Stage stage;
+    private Stage stage;
     
     public SaveLoad(Stage stage) {
         this.stage = stage;
     }
 
-    public static void saveFile(Node[][] maze, String fileName) {
+    public void saveFile(Node[][] maze, String fileName) {
         try {
             FileWriter fileWriter = new FileWriter(fileName);
             PrintWriter printWriter = new PrintWriter(fileWriter);
@@ -37,7 +37,7 @@ public class SaveLoad {
         }
     }
 
-    public static void save(Node[][] maze) {
+    public  void save(Node[][] maze) {
    	 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save Maze");
@@ -49,7 +49,7 @@ public class SaveLoad {
         }
     }
 
-    public static Node[][] loadFile(String fileName) {
+    public Node[][] loadFile(String fileName) {
        Node[][] maze = null;
        try {
            FileReader fileReader = new FileReader(fileName);
@@ -101,7 +101,7 @@ public class SaveLoad {
        return maze;
    }
 
-    public static Node[][] load() {
+    public Node[][] load() {
        FileChooser fileChooser = new FileChooser();
        fileChooser.setTitle("Load Maze");
        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
