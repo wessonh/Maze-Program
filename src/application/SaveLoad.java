@@ -48,15 +48,11 @@ public class SaveLoad {
         }
     }
 
-    public static Node[][] loadFile(String fileName) {
+    public static Node[][] loadFile(String fileName, int rows, int cols, BufferedReader bufferedReader, FileReader fileReader) {
         Node[][] maze = null;
         try {
-            FileReader fileReader = new FileReader(fileName);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            int rows = Integer.parseInt(bufferedReader.readLine());
-            int cols = Integer.parseInt(bufferedReader.readLine());
-            Main.x = cols;
-            Main.y = rows;
+            
+            
             maze = new Node[rows][cols];
 
             for (int i = 0; i < rows; i++) {
@@ -90,7 +86,7 @@ public class SaveLoad {
         return maze;
     }
 
-    public static Node[][] load() {
+    public static String load() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Load Maze");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
@@ -98,7 +94,7 @@ public class SaveLoad {
         File file = fileChooser.showOpenDialog(stage);
 
         if (file != null) {
-            return loadFile(file.getAbsolutePath());
+            return file.getAbsolutePath();
         }
         return null;
     }
