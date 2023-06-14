@@ -67,22 +67,7 @@ public class Solve {
                 nodes[j].distance = -1;
             }
         }
-        /*
-        Queue <Node> unsettled = new PriorityQueue<>();
-        unsettled.add(maze[0][0]);
-        
-        while(!unsettled.isEmpty()) {
-      	  
-      	  Node current = unsettled.poll();
-      	  for(Node neighbor : current.getNeighbors()) {
-      		  if(!neighbor.settled) {
-      			  evaluate(neighbor);
-      			  unsettled.add(neighbor);
-      		  }
-      		  
-      	  }
-      	  current.settled = true;
-        }*/
+      
         SolveQueue<Node> list = new SolveQueue<>(); // initializes queue and add the start node
         maze[0][0].setVisited(true);
         list.enqueue(maze[0][0]);

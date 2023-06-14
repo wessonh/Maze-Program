@@ -27,10 +27,12 @@ public class Main extends Application {
       	  MiddleSceneController middleScene = new MiddleSceneController(primaryStage);
       	  DrawMazeSceneController drawScene = new DrawMazeSceneController(primaryStage);
       	  
+      	  // Setting values for scene variables in each class (references to each other)
       	  introScene.setScenes(middleScene, drawScene);
       	  middleScene.setScenes(introScene, drawScene);
       	  drawScene.setScenes(introScene, middleScene);
       	  
+      	  // Start methods run javafx components
       	  introScene.start();
       	  middleScene.start();
       	  drawScene.start();

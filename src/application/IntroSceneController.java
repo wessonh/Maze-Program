@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+
 public class IntroSceneController {
 	
 	private final Group group = new Group(); // group to store nodes for scene display
@@ -22,12 +23,12 @@ public class IntroSceneController {
 		scene = new Scene(group, 600, 600); 
 	}
 	
+	// Handles everything seen on the introduction scene and communicates with other scenes when needed
 	public void start() {
 
       try {
     	  
-      	 // creates a new scene with group as the root, this is where you adjust window size
-      	         
+      	// Starts load maze function on introScene     
          Button loadButton2 = new Button("Load Maze");
          loadButton2.setLayoutX(200);
          loadButton2.setLayoutY(400);
@@ -62,6 +63,7 @@ public class IntroSceneController {
          		
          		Welcome to the CS240 Maze Solver and Generator
          		""");
+         
          text.setTranslateX(100);
          text.setTranslateY(100);
          

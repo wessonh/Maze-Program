@@ -26,6 +26,8 @@ public class MiddleSceneController {
 	public MiddleSceneController() {
 		
 	}
+	
+	// Handles the scene after customization button is pressed
 	public void start() {
 
       try {

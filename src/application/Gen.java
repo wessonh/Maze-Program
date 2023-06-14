@@ -171,14 +171,7 @@ public class Gen {
         }
         timeline.play();
         timeline.setOnFinished(event -> {
-      	  
-      	  
-      	  /*back.setDisable(false);
-      	  clearButton.setDisable(false);
-      	  solveButton.setDisable(false);
-      	  saveButton.setDisable(false);
-      	  */
-      	  
+   
         });
         return maze;
     }
