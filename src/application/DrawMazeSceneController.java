@@ -125,6 +125,9 @@ public class DrawMazeSceneController {
               group.getChildren().addAll(solveButton, loadButton, back);
 
           }
+          else {
+          	group.getChildren().addAll(loadButton, back);
+          }
       });
 		  	
 	   } catch (Exception e) {
@@ -146,6 +149,7 @@ public class DrawMazeSceneController {
 		stage.setScene(scene);
 		group.getChildren().addAll(newCustom, back, solveButton, saveButton);
 	 	maze = generator.animateGen(group,x ,y);
+	 	solveButton.setDisable(false);
 	  	
 	}
 	
@@ -184,6 +188,9 @@ public class DrawMazeSceneController {
           group.getChildren().addAll(loadButton, solveButton, back);
           // add all buttons back to group2 after displaying maze
        
+      }
+      else {
+      	group.getChildren().addAll(loadButton, back);
       }
 	}
 }

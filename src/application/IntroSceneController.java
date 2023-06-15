@@ -21,6 +21,7 @@ public class IntroSceneController {
 		
 	   this.stage = stage;
 		scene = new Scene(group, 600, 600); 
+		this.stage.setResizable(false);
 	}
 	
 	// Handles everything seen on the introduction scene and communicates with other scenes when needed
